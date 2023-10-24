@@ -38,10 +38,10 @@
 	</bean>
 
 	<!-- service package -->
-	<context:component-scan base-package="com.demo.service"/>
+	<context:component-scan base-package="com.docmall.service"/>
 	
 	<!-- mapper package -->
-	<mybatis-spring:scan base-package="com.demo.mapper"/>
+	<mybatis-spring:scan base-package="com.docmall.mapper"/>
 
 	<!-- Mybatis 라이브러리를 이용한 연결정보 설정 -->
 	<bean id="sqlSessionFactory"
