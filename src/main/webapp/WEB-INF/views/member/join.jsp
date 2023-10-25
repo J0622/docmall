@@ -3,6 +3,7 @@
 
 <!doctype html>
 <html lang="en">
+
 <head>
 <meta charset="utf-8">
 <meta name="viewport"
@@ -39,6 +40,7 @@
 
 
 </head>
+
 <body>
 
 	<%@include file="/WEB-INF/views/comm/header.jsp"%>
@@ -87,9 +89,22 @@
 						</div>
 						<div class="form-group row">
 							<label for="mbsp_email" class="col-2">이메일</label>
-							<div class="col-10">
+							<div class="col-8">
 								<input type="email" class="form-control" name="mbsp_email"
 									id="mbsp_email" placeholder="이메일을 입력하세요">
+							</div>
+							<div class="col-2">
+								<button type="button" class="btn btn-info" id="mailAuth">메일인증</button>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="mbsp_id" class="col-2">인증코드</label>
+							<div class="col-7">
+								<input type="text" class="form-control" name="authCode"
+									id="authCode" placeholder="인증코드 입력..">
+							</div>
+							<div class="col-3">
+								<button type="button" class="btn btn-info" id="authCode">인증확인</button>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -257,19 +272,67 @@
 		// 자바스크립트 이벤트 등록: w3school, mdn참조
 		// class는 .로 작성 id는 #으로 작성
 		$(document).ready(function() {
-      // document getElementById("idCheck");
-			$("#idCheck").click(function(){
-        // alert("아이디 중복체크 테스트");
+			// document getElementById("idCheck");
+			$("#idCheck").click(function() {
+				// alert("아이디 중복체크 테스트");
 
-        // 아이디의 값이 null이면 alert 동작하는 구문
-        if($("#mbsp_id").val() == ""){
-        alert("아이디를 입력하세요.");
-        $("#mbsp_id").focus();
-        return;
-        }
-        // 아이디 중복체크
+				// 아이디 중복체크 사용 유무를 체크 (사용자가 반드시 사용하도록 하기위함.)
+				let userIDCheck = false;
 
-      });
+				// 아이디의 값이 null이면 alert 동작하는 구문
+				if ($("#mbsp_id").val() == "") {
+					alert("아이디를 입력하세요.");
+					$("#mbsp_id").focus();
+					return;
+				}
+				// 아이디 중복체크
+				$.ajax({
+					url : '/member/idCheck',
+					type : 'get',
+					dataType : 'text',
+					data : {
+						mbsp_id : $('#mbsp_id').val()
+					},
+					success : function(result) {
+						if (result == "yes") {
+							alert("아이디 사용가능");
+							userIDCheck = true;
+						} else {
+							alert("사용 불가능한 아이디")
+							userIDCheck = false;
+							$("#mbsp_id").val(""); // 아이디 텍스트 박스를 공백으로 만들어주는 기능
+							$("#mbsp_id").focus(); // 박스에 포커스
+						}
+					}
+
+				});
+			});
+			// 메일인증 요청
+			$("#mailAuth").click(function() {
+
+				if ($("#mbsp_email").val() == "") {
+					alert("이메일을 입력하세요.")
+					$("#mbsp_email").focus();
+
+				} else {
+					$.ajax({
+						url : '/email/authCode',
+						type : 'get', // authCode가 get방식이므로 
+						dataType : 'text', // success를 확인해서 text
+						// 스프링에서 받을 파라미터명 : 사용자가 작성해서 전송한 데이터
+						data : {
+							receiverMail : $("#mbsp_email").val()
+						},
+						success : function(result) {
+							if (result == "success") {
+								alert("인증메일이 발송되었습니다.");
+							}
+						}
+					});
+				}
+
+			});
+
 		});
 	</script>
 </body>
