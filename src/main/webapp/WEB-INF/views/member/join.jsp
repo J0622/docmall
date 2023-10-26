@@ -53,7 +53,7 @@
 				</div>
 
 
-				<form role="form">
+				<form role="form" id="joinForm" method="post" action="/member/join">
 					<div class="box-body">
 						<div class="form-group row">
 							<label for="mbsp_id" class="col-2">아이디</label>
@@ -98,13 +98,13 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="mbsp_id" class="col-2">인증코드</label>
+							<label for="authCode" class="col-2">인증코드</label>
 							<div class="col-7">
 								<input type="text" class="form-control" name="authCode"
 									id="authCode" placeholder="인증코드 입력..">
 							</div>
 							<div class="col-3">
-								<button type="button" class="btn btn-info" id="authCode">인증확인</button>
+								<button type="button" class="btn btn-info" id="btnConfirmAuth">인증확인</button>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -146,15 +146,17 @@
 
 
 					<div class="box-footer">
-						<button type="submit" class="btn btn-primary">Submit</button>
-					</div>
+						<!--button,submit 모두 자바스크립트 함수에서 사용가능-->
+						<button type="button" class="btn btn-primary" id="btnJoin">회원가입</button>
+					</div>	
 				</form>
 			</div>
-		</div>
+		
 	</div>
 
 
 	<%@include file="/WEB-INF/views/comm/footer.jsp"%>
+</div>
 
 	<!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
 	<div id="layer"
@@ -271,13 +273,15 @@
 		// ready() 이벤트 메소드 : 브라우저가 html 태그를 모두 읽고난 후에 동작하는 이벤트 특징
 		// 자바스크립트 이벤트 등록: w3school, mdn참조
 		// class는 .로 작성 id는 #으로 작성
+		
 		$(document).ready(function() {
 			// document getElementById("idCheck");
+			let useIDCheck = false;
 			$("#idCheck").click(function() {
 				// alert("아이디 중복체크 테스트");
 
 				// 아이디 중복체크 사용 유무를 체크 (사용자가 반드시 사용하도록 하기위함.)
-				let userIDCheck = false;
+				
 
 				// 아이디의 값이 null이면 alert 동작하는 구문
 				if ($("#mbsp_id").val() == "") {
@@ -291,15 +295,15 @@
 					type : 'get',
 					dataType : 'text',
 					data : {
-						mbsp_id : $('#mbsp_id').val()
+						mbsp_id : $("#mbsp_id").val()
 					},
 					success : function(result) {
 						if (result == "yes") {
 							alert("아이디 사용가능");
-							userIDCheck = true;
+							useIDCheck = true;
 						} else {
 							alert("사용 불가능한 아이디")
-							userIDCheck = false;
+							useIDCheck = false;
 							$("#mbsp_id").val(""); // 아이디 텍스트 박스를 공백으로 만들어주는 기능
 							$("#mbsp_id").focus(); // 박스에 포커스
 						}
@@ -332,6 +336,78 @@
 				}
 
 			});
+
+			// 인증코드 변수
+			let isConfirmAuth = false;
+
+			// 인증확인
+			// 참조 <button type="button" class="btn btn-info" id="btnConfirmAuth">
+			// click했을때 동작할 익명함수 작성
+			$("#btnConfirmAuth").click(function(){
+				if($("#authCode").val() == ""){
+					alert("인증코드를 입력하세요");
+					$("#authCode").focus();
+					return;
+				}
+				// 실질적인 기능 작업
+				// 인증코드 확인요청
+				$.ajax({
+					url: '/email/confirmAuthCode',
+					type: 'get',
+					dataType: 'text',
+					data: { authCode :$("#authCode").val()},
+					success: function(result){
+						if(result == "success"){
+							alert("인증 성공");
+							isConfirmAuth = true;
+						}else if(result == "fail"){
+							alert("올바르지 않은 인증코드입니다.");
+							$("#authCode").val("");
+							isConfirmAuth = false;
+						}else if(result == "request"){
+							alert("만료된 인증코드입니다.");
+							$("#authCode").val("");
+							isConfirmAuth = false;
+						}
+					}
+				});
+				
+				// 폼태그 참조
+				// <form role="form" id="joinForm" method="post" action="">
+					let joinForm = $("#joinForm");
+
+				// 회원가입 버튼
+				$("#btnJoin").click(function(){
+					// 회원가입 유효성 검사
+
+					if(!useIDCheck){
+						alert("아이디 중복체크가 필요합니다.");
+						return;
+					}
+
+					if(!isConfirmAuth){
+						alert("메일인증이 필요합니다.");
+						return;
+					}
+					
+				
+
+					// 폼 전송작업
+					joinForm.submit();
+				});
+
+
+
+
+
+			});
+
+
+
+
+
+
+
 
 		});
 	</script>

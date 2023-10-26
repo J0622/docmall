@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.docmall</groupId>
@@ -7,7 +8,7 @@
 	<name>docmall</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
-		<properties>
+	<properties>
 		<java-version>1.8</java-version>
 		<org.springframework-version>5.0.7.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
@@ -91,7 +92,7 @@
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
-		<!-- 서블릿 버전과 web.xml의 버전을 동일하게 한다. (필수는 아니지만 매우 권장)-->
+		<!-- 서블릿 버전과 web.xml의 버전을 동일하게 한다. (필수는 아니지만 매우 권장) -->
 		<!-- Servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -105,8 +106,8 @@
 			<version>2.1</version>
 			<scope>provided</scope>
 		</dependency>
-		
-		<!-- jsp 작업시 스크립트 릿의 불편함을 해소하기위해  사용되는 라이브러리(jstl) -->
+
+		<!-- jsp 작업시 스크립트 릿의 불편함을 해소하기위해 사용되는 라이브러리(jstl) -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
@@ -209,7 +210,7 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.9.4</version>
 		</dependency>
-		
+
 		<!-- 롬복을 스프링 툴 자체에도 설정해야 한다. -->
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
@@ -218,23 +219,42 @@
 			<version>1.18.26</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- 스케줄링, 메일발송, 캐시 연동,Velocity 등 부가기능제공 -->
-      <!-- org.springframework.mail.javamail.JavaMailSenderImpl -->
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-context-support</artifactId>
-          <version>${org.springframework-version}</version>
-      </dependency>
-      
-      <!-- 이론설명 할것. -->
-      <!-- 메일 관련라이브러리  javax.mail.internet.MimeMessage -->
-        <dependency>
-          <groupId>com.sun.mail</groupId>
-          <artifactId>javax.mail</artifactId>
-          <version>1.5.6</version>
-      </dependency>
-		
+		<!-- org.springframework.mail.javamail.JavaMailSenderImpl -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+
+		<!-- 이론설명 할것. -->
+		<!-- 메일 관련라이브러리 javax.mail.internet.MimeMessage -->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.5.6</version>
+		</dependency>
+
+		<!-- 스프링 시큐리티 암호화 기능 -->
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>4.1.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>4.1.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>4.1.0.RELEASE</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
