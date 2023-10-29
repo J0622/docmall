@@ -123,7 +123,7 @@ public class MemberController {
 					rttr.addFlashAttribute("msg", msg); // login.jsp파일에서 사용하기 위함
 			}
 			
-			return "redirect: " + url;
+			return "redirect:" + url;
 			
 		}
 		

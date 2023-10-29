@@ -10,7 +10,7 @@
 		MBSP_ID FROM mbsp_tbl WHERE MBSP_ID = #{mbsp_id}
 	</select>
 	<insert id="join" parameterType="com.docmall.domain.MemberVO">
-		INSERT INTO mbsp_tbl(mbsp_id,
+		INSERT INTO MBSP_TBL(MBSP_ID,
 		MBSP_NAME, MBSP_EMAIL, MBSP_PASSWORD,
 		MBSP_ZIPCODE, MBSP_ADDR,
 		MBSP_DEADDR, MBSP_PHONE)

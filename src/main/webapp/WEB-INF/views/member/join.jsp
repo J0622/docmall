@@ -57,12 +57,12 @@
 					<div class="box-body">
 						<div class="form-group row">
 							<label for="mbsp_id" class="col-2">아이디</label>
-							<div class="col-7">
+							<div class="col-8">
 								<input type="text" class="form-control" name="mbsp_id"
 									id="mbsp_id" placeholder="아이디를 입력하세요..">
 							</div>
-							<div class="col-3">
-								<button type="button" class="btn btn-info" id="idCheck">아이디
+							<div class="col-2">
+								<button type="button" class="btn btn-outline-info" id="idCheck">아이디
 									중복체크</button>
 							</div>
 						</div>
@@ -99,12 +99,12 @@
 						</div>
 						<div class="form-group row">
 							<label for="authCode" class="col-2">인증코드</label>
-							<div class="col-7">
+							<div class="col-8">
 								<input type="text" class="form-control" name="authCode"
 									id="authCode" placeholder="인증코드 입력..">
 							</div>
-							<div class="col-3">
-								<button type="button" class="btn btn-info" id="btnConfirmAuth">인증확인</button>
+							<div class="col-2">
+								<button type="button" class="btn btn-outline-info" id="btnConfirmAuth">인증확인</button>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -115,7 +115,7 @@
 							</div>
 							<div class="col-2">
 								<button type="button" onclick="sample2_execDaumPostcode()"
-									class="btn btn-info">우편번호 찾기</button>
+									class="btn btn-outline-info">우편번호 찾기</button>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -129,9 +129,8 @@
 							<label for="sample2_detailAddress" class="col-2">상세주소</label>
 							<div class="col-10">
 								<input type="text" class="form-control" name="mbsp_deaddr"
-									id="sample2_detailAddress" placeholder="상세주소.."> <input
-									type="hidden" class="form-control" name="mbsp_deaddr"
-									id="sample2_extraAddress" placeholder="참고항목">
+									id="sample2_detailAddress" placeholder="상세주소.."> 
+									<input type="hidden" id="sample2_extraAddress" placeholder="참고항목">
 							</div>
 						</div>
 						<div class="form-group row">
