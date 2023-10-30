@@ -1,38 +1,41 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 
-	<!doctype html>
-	<html lang="en">
+<!doctype html>
+<html lang="en">
 
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="">
-		<meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-		<meta name="generator" content="Hugo 0.101.0">
-		<title>Pricing example · Bootstrap v4.6</title>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author"
+	content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+<meta name="generator" content="Hugo 0.101.0">
+<title>Pricing example · Bootstrap v4.6</title>
 
-		<!-- Bootstrap core CSS -->
-		<%@include file="/WEB-INF/views/comm/plugin2.jsp" %>
+<!-- Bootstrap core CSS -->
+<%@include file="/WEB-INF/views/comm/plugin2.jsp"%>
 
 
-			<!-- Favicons -->
+<!-- Favicons -->
 
-			<style>
-				.bd-placeholder-img {
-					font-size: 1.125rem;
-					text-anchor: middle;
-					-webkit-user-select: none;
-					-moz-user-select: none;
-					-ms-user-select: none;
-					user-select: none;
-				}
+<style>
+.bd-placeholder-img {
+	font-size: 1.125rem;
+	text-anchor: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
 
-				@media (min-width : 768px) {
-					.bd-placeholder-img-lg {
-						font-size: 3.5rem;
-					}
-				}
-			</style>
+@media ( min-width : 768px) {
+	.bd-placeholder-img-lg {
+		font-size: 3.5rem;
+	}
+}
+</style>
 
 			<script>
 			  let msg = '${msg}';
@@ -41,58 +44,61 @@
 			   }
 			</script>
 
-	</head>
+</head>
 
-	<body>
+<body>
 
-		<%@include file="/WEB-INF/views/comm/header.jsp" %>
+	<%@include file="/WEB-INF/views/comm/header.jsp"%>
 
-			<div class="container">
-				<div class="text-center">
-					<div class="box box-primary">
-						<div class="box-header with-border">
-							<h3 class="box-title">로그인</h3>
-						</div>
-						<form role="form" id="loginForm" method="post" action="/member/login">
-							<div class="box-body">
-								<div class="form-group row">
-									<label for="mbsp_id" class="col-2">아이디</label>
-									<div class="col-10">
-										<input type="text" class="form-control" name="mbsp_id" id="mbsp_id"
-											placeholder="아이디를 입력하세요..">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label for="mbsp_password" class="col-2">비밀번호</label>
-									<div class="col-10">
-										<input type="password" class="form-control" name="mbsp_password" id="mbsp_password"
-											placeholder="비밀번호를 입력하세요..">
-									</div>
-								</div>
-							</div>
-							<div class="box-footer">
-								<!--button,submit 모두 자바스크립트 함수에서 사용가능-->
-								<button type="submit" class="btn btn-primary" id="btnlogin">로그인</button>
-							</div>
-						</form>
-					</div>
-
+	<div class="container">
+		<div class="text-center">
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title">회원수정 인증확인</h3>
 				</div>
-
-
-				<%@include file="/WEB-INF/views/comm/footer.jsp" %>
+				<form role="form" id="loginForm" method="post"
+					action="/member/confirmPw">
+					<div class="box-body">
+						<div class="form-group row">
+							<label for="mbsp_id" class="col-2">아이디</label>
+							<div class="col-10">
+								<input type="text" class="form-control" name="mbsp_id"
+									id="mbsp_id" placeholder="아이디를 입력하세요..">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="mbsp_password" class="col-2">비밀번호</label>
+							<div class="col-10">
+								<input type="password" class="form-control" name="mbsp_password"
+									id="mbsp_password" placeholder="비밀번호를 입력하세요..">
+							</div>
+						</div>
+					</div>
+					<div class="box-footer">
+						<!--button,submit 모두 자바스크립트 함수에서 사용가능-->
+						<button type="submit" class="btn btn-primary" id="btnlogin">인증확인</button>
+					</div>
+				</form>
 			</div>
 
-			<!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
-			<div id="layer"
-				style="display: none; position: fixed; overflow: hidden; z-index: 1; -webkit-overflow-scrolling: touch;">
-				<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer"
-					style="cursor: pointer; position: absolute; right: -3px; top: -3px; z-index: 1"
-					onclick="closeDaumPostcode()" alt="닫기 버튼">
-			</div>
+		</div>
 
-			<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-			<script>
+
+		<%@include file="/WEB-INF/views/comm/footer.jsp"%>
+	</div>
+
+	<!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
+	<div id="layer"
+		style="display: none; position: fixed; overflow: hidden; z-index: 1; -webkit-overflow-scrolling: touch;">
+		<img src="//t1.daumcdn.net/postcode/resource/images/close.png"
+			id="btnCloseLayer"
+			style="cursor: pointer; position: absolute; right: -3px; top: -3px; z-index: 1"
+			onclick="closeDaumPostcode()" alt="닫기 버튼">
+	</div>
+
+	<script
+		src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script>
 				// 우편번호 찾기 화면을 넣을 element
 				var element_layer = document.getElementById('layer');
 
@@ -188,10 +194,20 @@
 				}
 			</script>
 
-			<%@include file="/WEB-INF/views/comm/plugin.jsp" %>
+	<%@include file="/WEB-INF/views/comm/plugin.jsp"%>
+	<script>
 
-				
-	</body>
+		$(document).ready(function() {
+		
+
+		});
+
+		
+	</script>
 
 
-	</html>
+
+</body>
+
+
+</html>

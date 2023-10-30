@@ -1,6 +1,5 @@
 package com.docmall.service;
 
-
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
@@ -16,9 +15,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
-	
+
 //	의존성 주입 (email-config.xml의 bean으로 주입)
 	private final JavaMailSender mailSender;
+	
 
 	@Override
 	public void sendMail(EmailDTO dto, String message) {
@@ -28,17 +28,22 @@ public class EmailServiceImpl implements EmailService {
 //			수신자
 			mimeMessage.addRecipient(RecipientType.TO, new InternetAddress(dto.getReceiverMail()));
 //			발신자
-			mimeMessage.addFrom(new InternetAddress[] {new InternetAddress(dto.getSenderMail(), dto.getSenderName())});
+			mimeMessage
+					.addFrom(new InternetAddress[] { new InternetAddress(dto.getSenderMail(), dto.getSenderName()) });
 //			메일제목
 			mimeMessage.setSubject(dto.getSubject(), "UTF-8");
 //			본문내용
-			mimeMessage.setText(message,"UTF-8");
-			
+			mimeMessage.setText(message, "UTF-8");
+
 //			여기 send 메소드 사용을위해 위 작업을 진행한것임.
 			mailSender.send(mimeMessage);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
+
+
+
+
 }
