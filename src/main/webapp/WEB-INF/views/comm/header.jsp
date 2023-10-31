@@ -35,41 +35,5 @@
 	</nav>
 	
 </div>
-<div class="dropdown">
-    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        상품 카테고리
-    </a>
 
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item main-category" href="#" data-category="men">Men</a>
-        <a class="dropdown-item main-category" href="#" data-category="women">Women</a>
-        <a class="dropdown-item main-category" href="#" data-category="kids">Kids</a>
-    </div>
-</div>
-
-<div id="men-category" class="sub-category" style="display:none;">
-    <a href="#">카테고리 1</a>
-    <a href="#">카테고리 2</a>
-    <a href="#">카테고리 3</a>
-</div>
-
-<div id="women-category" class="sub-category" style="display:none;">
-    <a href="#">카테고리 1</a>
-    <a href="#">카테고리 2</a>
-    <a href="#">카테고리 3</a>
-</div>
-
-<div id="kids-category" class="sub-category" style="display:none;">
-    <a href="#">카테고리 1</a>
-    <a href="#">카테고리 2</a>
-    <a href="#">카테고리 3</a>
-</div>
-
-<script>
-    $(".main-category").click(function() {
-        var category = $(this).data('category');
-        $(".sub-category").hide();
-        $("#" + category + "-category").show();
-    });
-</script>
 
