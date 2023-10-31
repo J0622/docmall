@@ -6,4 +6,5 @@ public interface AdminMapper {
 	
 	AdminVO admin_ok(String admin_id);
 	
+	void getRecentLoginTime(String admin_id);
 }

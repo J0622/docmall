@@ -58,7 +58,9 @@ public class AdminController {
 		if (passwordEncoder.matches(vo.getAdmin_pw(), db_vo.getAdmin_pw())) {
 //				loginStatus이 값을 가지고 사용자의 로그인 상태 여부를 체크
 			session.setAttribute("adminStatus", db_vo);
-
+			
+			adminService.getRecentLoginTime(vo.getAdmin_id());
+			
 			url = "/admin/admin_menu";
 
 		} else {

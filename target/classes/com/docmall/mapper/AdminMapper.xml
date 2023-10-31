@@ -16,4 +16,13 @@
 		ADMIN_ID = #{admin_id}
 	</select>
 	
+	<update id="getRecentLoginTime" parameterType="String">
+		UPDATE 
+			ADMIN_TBL
+		SET	
+			ADMIN_LASTLOGIN = sysdate	
+		WHERE 
+	    	ADMIN_ID = #{admin_id}	
+	</update>
+	
 </mapper>

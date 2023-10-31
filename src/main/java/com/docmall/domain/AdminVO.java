@@ -15,6 +15,7 @@ public class AdminVO {
 
 	private String admin_id;
 	private String admin_pw;
-	private Date admin_visit_date;
+	private Date   admin_visit_date;
+	private Date   admin_lastlogin;
 	
 }

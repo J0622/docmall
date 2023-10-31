@@ -36,12 +36,7 @@
 		<!-- Sidebar Menu -->
 		<ul class="sidebar-menu" data-widget="tree">
 			<li class="header">HEADER</li>
-			<!-- Optionally, you can add icons to the links -->
-			<li class="active"><a href="#"><i class="fa fa-link"></i> 
-			<span>Link</span></a></li>
-			<li><a href="#"><i class="fa fa-link"></i> 
-			<span>Another Link</span></a></li>
-			
+			<!-- Optionally, you can add icons to the links -->			
 			<li class="treeview"><a href="#">
 			<i class="fa fa-link"></i>
 					<span>상품관리</span> <span class="pull-right-container">

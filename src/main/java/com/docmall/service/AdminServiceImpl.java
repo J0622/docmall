@@ -23,6 +23,14 @@ public class AdminServiceImpl implements AdminService {
 		// TODO Auto-generated method stub
 		return adminMapper.admin_ok(admin_id);
 	}
+
+	@Override
+	public void getRecentLoginTime(String admin_id) {
+		
+		adminMapper.getRecentLoginTime(admin_id);
+	}
+
+
 	
 
 	
