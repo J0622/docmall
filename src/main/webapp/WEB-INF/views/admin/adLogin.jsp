@@ -58,10 +58,10 @@
  <script>
  	$(document).ready(function() {
  	  let msg = '${msg}';
-      if(msg == 'failPW') {
-        alert("비밀번호를 확인하세요");
-      }else if(msg == 'failID') {
-    	  alert("아이디를 확인하세요");
+      if(msg == 'failID') {
+        alert("아이디를 확인하세요");
+      }else if(msg == 'failPW') {
+    	  alert("비밀번호를 확인하세요");
       }
  	});
  

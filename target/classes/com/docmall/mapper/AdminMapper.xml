@@ -5,15 +5,15 @@
 
 <mapper namespace="com.docmall.mapper.AdminMapper">
 
-	<select id="admin_ok" parameterType="String" resultType="">
+	<select id="admin_ok" parameterType="String" resultType="com.docmall.domain.AdminVO">
 	SELECT 
 		ADMIN_ID, 
-		ADMIN_PW, A
-		DMIN_VISIT_DATE 
+		ADMIN_PW,
+		 ADMIN_VISIT_DATE 
 	FROM 
 		ADMIN_TBL 
 	WHERE 
-		ADMIN_ID = #{ADMIN_ID};
+		ADMIN_ID = #{admin_id}
 	</select>
 	
 </mapper>

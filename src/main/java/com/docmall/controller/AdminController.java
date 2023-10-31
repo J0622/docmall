@@ -39,8 +39,8 @@ public class AdminController {
 	}
 	
 //	관리자 로그인 인증
-	@PostMapping("/admin/admin_ok")
-	public String admin_ok(AdminVO vo, HttpSession session , RedirectAttributes rttr) {
+	@PostMapping("/admin_ok")
+	public String admin_ok(AdminVO vo, HttpSession session , RedirectAttributes rttr)throws Exception {
 		
 		log.info("로그인: " + vo);
 
@@ -64,14 +64,14 @@ public class AdminController {
 		} else {
 //				로그인 폼 주소로 이동
 			url = "/admin/intro";
-			msg = "비밀번호가 일치하지 않습니다.";
+			msg = "failPW";
 //				"문자열",변수
 			rttr.addFlashAttribute("msg", msg); 
 		}
 	} else {
 //			아이디가 일치하지 않는경우
 		url = "/admin/intro";
-		msg = "아이디가 일치하지 않습니다.";
+		msg = "failID";
 		rttr.addFlashAttribute("msg", msg); 
 	}
 

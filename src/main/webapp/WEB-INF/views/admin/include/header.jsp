@@ -22,7 +22,7 @@
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
 						<li class="dropdown messages-menu">
-							<a href="#">최근 접속시간:[<fmt:formatDate value="${sessionScope.adminStatus.admin_visit_date }" pattern="yyyy-MM-dd hh:mm:ss"/>] </a>
+							<a>최근 접속시간:[<fmt:formatDate value="${sessionScope.adminStatus.admin_visit_date }" pattern="yyyy-MM-dd hh:mm:ss"/>] </a>
 						</li>
 					</ul>
 					<c:if test="${sessionScope.adminStatus != null }">
