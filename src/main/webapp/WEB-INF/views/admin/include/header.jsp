@@ -21,7 +21,7 @@
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
 						<li class="dropdown messages-menu">
-							<a>최근 접속시간:[<fmt:formatDate value="${sessionScope.adminStatus.admin_lastlogin }" pattern="yyyy-MM-dd hh:mm:ss"/>] </a>
+							<a>최근 접속시간:[<fmt:formatDate value="${sessionScope.adminStatus.admin_lastlogin }" pattern="yyyy-MM-dd a hh:mm:ss "/>] </a>
 						</li>
 					</ul>
 					<c:if test="${sessionScope.adminStatus != null }">
@@ -31,6 +31,11 @@
 						</li>
 					</ul>
 					</c:if>
+					<ul class="nav navbar-nav">
+						<li class="dropdown messages-menu">
+							<a href="/">[DocMall]</a>
+						</li>
+					</ul>
 					
 				</div>
 			</nav>

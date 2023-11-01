@@ -44,7 +44,7 @@
 				</span> 
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="#">상품등록</a></li>
+					<li><a href="/admin/product/pro_insert">상품등록</a></li>
 					<li><a href="#">상품목록</a></li>
 				</ul>
 				</li>
@@ -55,8 +55,8 @@
 				</span> 
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="#">상품등록</a></li>
-					<li><a href="#">상품목록</a></li>
+					<li><a href="#">1</a></li>
+					<li><a href="#">2</a></li>
 				</ul>
 				</li>
 				<li class="treeview"><a href="#">
@@ -66,8 +66,8 @@
 				</span> 
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="#">상품등록</a></li>
-					<li><a href="#">상품목록</a></li>
+					<li><a href="#">3</a></li>
+					<li><a href="#">4</a></li>
 				</ul>
 				</li>
 		</ul>

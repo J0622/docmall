@@ -31,6 +31,7 @@
 		<a class="p-2 text-dark" href="/member/mypage">마이페이지</a> <a
 			class="p-2 text-dark" href="#">주문하기</a> <a class="p-2 text-dark"
 			href="#">장바구니</a>
+			<a class="p-2 text-dark" href="/admin/intro">[Admin]</a>
 			
 	</nav>
 	
