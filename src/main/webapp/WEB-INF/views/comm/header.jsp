@@ -33,6 +33,7 @@
 			href="#">장바구니</a>
 			<a class="p-2 text-dark" href="/admin/intro">[Admin]</a>
 			
+			
 	</nav>
 	
 </div>
