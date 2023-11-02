@@ -8,6 +8,7 @@
 	<insert id="pro_insert" parameterType="com.docmall.domain.ProductVO" >
 		INSERT INTO 
 			PRODUCT_TBL(
+				PRO_NUM,
 				CG_CODE, 
 				PRO_NAME, 
 				PRO_PRICE, 
@@ -20,6 +21,7 @@
 				PRO_BUY
 			)
 			VALUES(
+				SEQ_PRODUCT_TBL.nextval,
 				#{cg_code},
 				#{pro_name},
 				#{pro_price},
