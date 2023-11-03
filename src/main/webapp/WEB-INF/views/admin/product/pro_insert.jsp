@@ -72,20 +72,22 @@ desired effect
 								<h3 class="box-title mt-5">Product</h3>
 							</div>
 							<!-- ./register도 가능 -->
-							<form role="form" method="post" action="/admin/product/pro_insert" enctype="multipart/form-data">
+							<form role="form" method="post"
+								action="/admin/product/pro_insert" enctype="multipart/form-data">
 								<div class="box-body">
 									<div class="form-group row">
 										<label for="title" class="col-sm-2">카테고리</label>
 										<div class="col-sm-3">
-											<select class="form-control"  id="firstCategory">
+											<select class="form-control" id="firstCategory">
 												<option>1차 카테고리</option>
-												<c:forEach items = "${firstCategoryList }" var="categoryVO">
+												<c:forEach items="${firstCategoryList }" var="categoryVO">
 													<option value="${categoryVO.cg_code }">${categoryVO.cg_name }</option>
 												</c:forEach>
 											</select>
 										</div>
 										<div class="col-sm-3">
-											<select class="form-control" id="secondCategory" name="cg_code">
+											<select class="form-control" id="secondCategory"
+												name="cg_code">
 												<option>2차 카테고리</option>
 											</select>
 										</div>
@@ -122,14 +124,14 @@ desired effect
 										</div>
 										<label for="title" class="col-sm-2">이미지 미리보기</label>
 										<div class="col-sm-4">
-											<img id="img_preview" style="width: 200px; height: 200px;" >
+											<img id="img_preview" style="width: 200px; height: 200px;">
 										</div>
 									</div>
 									<div class="form-group row">
 										<label for="title" class="col-sm-2">상품설명</label>
 										<div class="col-sm-10">
 											<textarea class="form-control" rows="3" id="pro_content"
-											name="pro_content" placeholder="내용 ..."></textarea>
+												name="pro_content" placeholder="내용 ..."></textarea>
 										</div>
 									</div>
 									<div class="form-group row">
@@ -145,7 +147,7 @@ desired effect
 												<option value="불가능">판매불가능</option>
 											</select>
 										</div>
-									</div>	
+									</div>
 								</div>
 
 								<div class="box-footer ">
@@ -154,7 +156,8 @@ desired effect
 									</div>
 									<div class="text-center">
 										<button type="submit" class="btn btn-primary">상품등록</button>
-										<button type="reset" class="btn btn-primary">취소</button>
+										<button type="submit" class="btn btn-primary">삭제</button>
+										<button type="button" id="btn_pro_list" class="btn btn-primary">목록</button>
 									</div>
 								</div>
 							</form>
@@ -317,5 +320,19 @@ desired effect
 
 			});
 	</script>
+
+	<script>
+			// 리스트 클릭
+			document.getElementById("btn_pro_list").addEventListener("click",
+				fn_list);
+
+		function fn_list() {
+			location.href = "/admin/product/pro_list";
+
+		}
+	</script>
+
+
+
 </body>
 </html>

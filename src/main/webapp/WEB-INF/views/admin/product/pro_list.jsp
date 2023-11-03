@@ -109,7 +109,7 @@ desired effect
 							</div>
 							<div class="box-footer clearfix">
 								<div class="row">
-									<div class="col-6">
+									<div class="col-6 text-center">
 										<nav aria-label="...">
 											<ul class="pagination">
 												<!-- 이전 페이지 표시 여부 -->
@@ -141,7 +141,7 @@ desired effect
 											</ul>
 										</nav>
 									</div>
-									<div class="col-6">
+									<div class="col-6 text-center" >
 										<!-- post방식을 사용하면 이전버튼을 누르면 만료된 페이지입니다. 라는 문제가 생긴다. -->
 										<!-- 따라서 검색기능을 작업할때는 get방식을 사용한다. -->
 										<form action="/board/list" method="get">
@@ -171,7 +171,7 @@ desired effect
 										</form>
 									</div>
 								</div>
-								<a class="btn btn-primary" href="/board/register" role="button">글쓰기</a>
+								<a class="btn btn-primary" href="/admin/product/pro_insert" role="button">상품등록</a>
 							</div>
 						</div>
 					</div>
