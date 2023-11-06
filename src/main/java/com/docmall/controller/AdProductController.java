@@ -10,11 +10,13 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.w3c.dom.ls.LSInput;
@@ -111,45 +113,61 @@ public class AdProductController {
 //			Path : /upload, Document Base : C:\\dev\\upload\\ckeditor 설정
 //			2)Tomcat server.xml에서 <Context docBase="C:\\dev\\devTools\\upload\\ckeditor"
 //			path="/ckupload" reloadable="true" />
-			
-			  String fileUrl = "/ckupload/" + fileName;
-		         // {"filename":"abc.gif", "uploaded":1, "url":"/upload/abc.gif"}
-		         printWriter.println("{\"filename\":\"" +  fileName + "\", \"uploaded\":1,\"url\":\"" + fileUrl + "\"}");
-		         printWriter.flush();
-			
+
+			String fileUrl = "/ckupload/" + fileName;
+			// {"filename":"abc.gif", "uploaded":1, "url":"/upload/abc.gif"}
+			printWriter.println("{\"filename\":\"" + fileName + "\", \"uploaded\":1,\"url\":\"" + fileUrl + "\"}");
+			printWriter.flush();
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally{
-			if(out != null) {
-			try {
-				out.close();
-			} catch (Exception ex) {
-				ex.printStackTrace();
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (Exception ex) {
+					ex.printStackTrace();
 				}
 			}
-			if(printWriter != null) printWriter.close();
-			
+			if (printWriter != null)
+				printWriter.close();
+
 		}
 //		
 	}
-	
+
 //	상품 리스트 (목록 및 페이징작업)
 	@GetMapping("/pro_list")
-	public void pro_list(Criteria cri , Model model) throws Exception{
+	public void pro_list(Criteria cri, Model model) throws Exception {
+//		dto를 직접 변경하지 않고 해당 메소드에서 작업하는 방법
+		cri.setAmount(2);
+		
+		
+		
 		List<ProductVO> pro_list = adProductService.pro_list(cri);
 //		날짜 폴더의 역슬래시를 슬래시로 바꾸는 작업
 //		이유: 역슬래시로 되어있는 정보가 스프리으으로 보내는 요청데이터에 사용되면 에러발생
+//		스프링에서 처리를 안할경우 자바스크립스트에서도 처리 가능
 		pro_list.forEach(vo -> {
 			vo.setPro_up_folder(vo.getPro_up_folder().replace("\\", "/"));
 		});
-		
-		model.addAttribute("pro_list",pro_list);
-		
+
+//		"pro_list" = jsp참조
+		model.addAttribute("pro_list", pro_list);
+
 		int totalcount = adProductService.getTotalCount(cri);
 		model.addAttribute("pageMaker", new PageDTO(cri, totalcount));
-		
+
 	}
-	
-	
+
+//	상품 리스트에서 보여줄 이미지
+//	ajax 작업 진행시  @ResponseBody 어노테이션 사용
+//	"/imageDisplay" 이 주소를 통해서 날짜경로와 이미지이름을 각각 보낼것임
+	@ResponseBody
+	@GetMapping("/imageDisplay")  //  매핑주소: "/admin/product/imageDisplay"
+	public ResponseEntity<byte[]> imageDisplay(String dateFolderName, String fileName) throws Exception {
+
+		return FileUtils.getFile(uploadPath + dateFolderName, fileName);
+	}
+
 }

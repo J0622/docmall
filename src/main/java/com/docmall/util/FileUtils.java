@@ -8,6 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import net.coobird.thumbnailator.Thumbnailator;
@@ -100,5 +104,37 @@ public class FileUtils {
 		return isImageType;
 	}
 	
+//	프로젝트 외부폴더에서 관리되고 있는 상품이미지를 브라우저의 <img src="">
+//	즉 이미지 태그로 부터 요청이 들어왔을 때 바이트배열로 보내주는 작업
+//	String uploadPath: 업로드 폴더 경로
+//	String fileName: 날짜 폴더 경로를 포함한 파일명(DB)
+//	ResponseEntity 클래스: 1)헤더 2)바디 3)상태코드
+	
+		public static ResponseEntity<byte[]> getFile(String uploadPath, String fileName) throws Exception{
+			ResponseEntity<byte[]> entity = null;
+			
+//			결과적으로 외부폴더의 이미지 파일을 참조 하는객체가 생성됨(단, 이미지 파일이 존재 한다는 가정)
+			File file = new File(uploadPath, fileName);
+			
+//			파일이 해당경로에 존재하지 않으면
+			if(!file.exists()) {
+				return entity; // null로 리턴
+			}
+			
+//			1) header작업
+//			Files.probeContentType(file.toPath()) : image/jpg
+//			file: 405ca84b-4b66-4b02-9c0f-38a9db8e2eed_산.jpg
+//			copyToByteArray 이 녀석의 리턴타입은 ResponseEntity<byte[]> 와 일치해야 한다.
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Content-Type", Files.probeContentType(file.toPath()));
+			
+			entity = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(file),headers, HttpStatus.OK);
+			
+			return entity;
+		}
+	
+
+	
 	
 }
+

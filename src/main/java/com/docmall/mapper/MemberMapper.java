@@ -15,4 +15,6 @@ public interface MemberMapper {
 	void loginTimeUpdate(String mbsp_id);
 	
 	void delete(String mbsp_id);
+	
+	
 }

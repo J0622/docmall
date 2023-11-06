@@ -143,8 +143,8 @@ desired effect
 										<label for="title" class="col-sm-2">판매여부</label>
 										<div class="col-sm-4">
 											<select id="pro_buy" name="pro_buy">
-												<option value="가능">판매가능</option>
-												<option value="불가능">판매불가능</option>
+												<option value="Y">가능</option>
+												<option value="N">불가능</option>
 											</select>
 										</div>
 									</div>

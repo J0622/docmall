@@ -77,4 +77,7 @@
 		 WHERE 
 	    	MBSP_ID = #{mbsp_id}
 	</delete>
+	
+
+	
 </mapper>
