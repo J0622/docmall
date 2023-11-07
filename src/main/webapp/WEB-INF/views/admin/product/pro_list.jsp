@@ -122,8 +122,10 @@ desired effect
 														<option value="N" ${productVO.pro_buy}=='N' ? 'selected' :''>판매불가능</option>
 													</select>
 												</td>
-												<td><button value="수정" class="btn btn-primary">수정</button></td>
-												<td><button value="삭제" class="btn btn-danger">삭제</button></td>
+												<!-- id로 접근하게 될 경우 에러맞음 -->
+												<!-- foreach문 안에 존재하므로 반복하는데 id는 고유하게 하나만 존재해야 하는 특성에 의해 모순이 생김 -->
+												<td><button type="button"  class="btn btn-primary" name="btn_edit">수정</button></td>
+												<td><button type="button"  class="btn btn-danger btn_del">삭제</button></td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -131,18 +133,21 @@ desired effect
 							</div>
 							<div class="box-footer clearfix">
 								<div class="row">
-									<div class="col-md-2">
-										<button
-										 class="btn btn-primary" id="btn_check_modify" role="button">체크상품 수정</button>
+									<div class="col-md-4">
+										<button type="button"  class="btn btn-primary" id="btn_check_modify1" role="button">
+											체크상품 수정1</button>
+
+										<button type="button"  class="btn btn-primary" id="btn_check_modify2" role="button">
+											체크상품 수정2</button>
 										<form id="actionForm" action="" method="get">
 											<input type="hidden" name="pageNum" id="pageNum" value="${pageMaker.cri.pageNum}" />
 											<input type="hidden" name="amount" id="amount" value="${pageMaker.cri.amount}" />
 											<input type="hidden" name="type" id="type" value="${pageMaker.cri.type}" />
 											<input type="hidden" name="keyword" id="keyword" value="${pageMaker.cri.keyword}" />
-											<input type="hidden" name="pro_num" id="pro_num" />
+											
 										</form>
 									</div>
-									<div class="col-md-8 text-center">
+									<div class="col-md-6 text-center">
 										<nav aria-label="...">
 											<ul class="pagination">
 												<!-- 이전 페이지 표시 여부 -->
@@ -169,12 +174,12 @@ desired effect
 										</nav>
 											</div>
 												<div class="col-md-2 text-right">
-													<button class="btn btn-primary"  role="button">상품등록</button></div>
-							</div>
+													<button type="button"  class="btn btn-primary" id="btn_pro_insert" role="button">상품등록</button></div>
+							
 						</div>
 					</div>
 				</div>
-
+			</div>
 			</section>
 			<!-- /.content -->
 		</div>
@@ -264,9 +269,8 @@ desired effect
 
 	<script>
 		$(document).ready(function(){
+			let actionForm = $("#actionForm");
 			$(".movepage").on("click", function(e){
-
-				let actionForm = $("#actionForm");
 
 				// [이전] 1 2 3 4 5 [다음] 클릭 이벤트 설정 <a>태그 이용
 				e.preventDefault(); // a태그의 링크기능을 제거, href속성에 페이지 번호를 숨겨둠
@@ -279,13 +283,13 @@ desired effect
 				actionForm.submit();
 
 			});
-		});
+		
 
 		// 목록에서 제목행 체크박스
-		let idCheck = true;
+		let isCheck = true;
 			$("#checkAll").on("click", function () {
-				$("input[name='check']").prop("checker, this.isCheck");
-				idCheck = this.checked;
+				$("input[name='check']").prop("checked, this.checked");
+				isCheck = this.checked;
 			});
 			// 목록에서 데이터행 체크박스
 			$("input[name='check']").on("click", function () {
@@ -299,9 +303,52 @@ desired effect
 					}
 
 				});
+			});
+				// 체크박스 수정1 버튼 클릭
+				$("#btn_check_modify1").on("click", function () {
+					// 체크박스 유무 확인
+					if ($("input[name='check']:checked").length == 0) {
+						alert("수정할 상품을 체크하세요");
+						return;
+					}
+					// 배열문법
+					let pro_num_arr = []; // 체크된 상품코드 배열
+					let pro_price_arr = []; // 체크된 상품가격 배열
+					let pro_buy_arr = []; // 체크된 상품진열 배열
 
-				// 체크박스 수정 버튼 클릭
-				$("#btn_check_modify").on("click", function () {
+					// 
+					$("input[name='check']:checked").each(function () {
+						pro_num_arr.push($(this).val());
+						pro_price_arr.push($(this).parent().parent().find("input[name = 'pro_price']").val());
+						pro_buy_arr.push($(this).parent().parent().find("select[name = 'pro_buy']").val());
+					});
+					console.log("상품코드: ", pro_num_arr);
+					console.log("상품가격: ", pro_price_arr);
+					console.log("상품진열: ", pro_buy_arr);
+
+					// dataType: 스프링에서 넘어온 데이터타입(html,text,xml,json등)이 여기에 들어온다.
+					$.ajax({
+					url: "/admin/product/pro_checked_modify1",
+					type: 'post',
+					data: { pro_num_arr: pro_num_arr, pro_price_arr: pro_price_arr, pro_buy_arr: pro_buy_arr },
+					dataType:'text',
+					success:function(result){
+						if(result == "success"){
+						alert("선택항목이 수정되었습니다.");
+						// DB에서 다시 불러오는 작업
+						// location.href="/admin/product/pro_list";
+
+						// actionForm.attr("method",get);
+						// actionForm.attr("action","/admin/product/pro_list");
+						// actionForm.submit();
+						}
+					}
+				});
+					
+
+				});
+				
+				$("#btn_check_modify2").on("click", function () {
 					// 체크박스 유무 확인
 					if ($("input[name='check']:checked").length == 0) {
 						alert("수정할 상품을 체크하세요");
@@ -323,11 +370,53 @@ desired effect
 					console.log("상품가격: ", pro_price_arr);
 					console.log("상품진열: ", pro_buy_arr);
 
+					// dataType: 스프링에서 넘어온 데이터타입(html,text,xml,json등)이 여기에 들어온다.
+					$.ajax({
+					url: "/admin/product/pro_checked_modify2",
+					type: 'post',
+					data: { pro_num_arr: pro_num_arr, pro_price_arr: pro_price_arr, pro_buy_arr: pro_buy_arr },
+					dataType:'text',
+					success:function(result){
+						if(result == "success"){
+						alert("선택항목이 수정되었습니다.");
+
+
+							}
+						}
+					});
 				});
 
-			});
+				// 상품등록
+				$("#btn_pro_insert").on("click", function(){
+					location.href = "/admin/product/pro_insert";
+				});
+
+				// 상품수정
+				$("button[name='btn_edit']").on("click", function(){
+					
+					let pro_num = $(this).parent().parent().find("input[name='check']").val();
+
+					console.log(pro_num);
+
+					
+
+					actionForm.find("input[name='pro_num']").remove();
+
+					// <input type="hidden" name="pro_num" id="pro_num" value="25" />
+
+					actionForm.append('<input type="hidden" name="pro_num" id="pro_num" value = "' + pro_num + '" />');
+
+				actionForm.attr("method", "get");
+				actionForm.attr("action", "/admin/product/pro_edit");
+
+				
+				actionForm.submit();
+
+				});
 
 
+
+			}); // ready 이벤트
 
 	</script>
 

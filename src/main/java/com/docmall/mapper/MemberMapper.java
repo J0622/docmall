@@ -16,5 +16,7 @@ public interface MemberMapper {
 	
 	void delete(String mbsp_id);
 	
+	String findId(String mbsp_email);
 	
+    int findIdCheck(String mbsp_email);
 }

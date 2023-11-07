@@ -15,4 +15,5 @@ public interface MemberService {
 	
 	void delete(String mbsp_id);
 
+    
 }
