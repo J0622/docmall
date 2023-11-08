@@ -9,4 +9,7 @@ public interface AdCategoryService {
 	
 	List<CategoryVO> getFirstCategoryList();
 	List<CategoryVO> getSecondCategoryList(Integer cg_parent_code);
+	CategoryVO get(Integer cg_parent_code);
+	
+
 }

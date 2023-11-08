@@ -23,9 +23,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.docmall.domain.CategoryVO;
 import com.docmall.domain.ProductVO;
 import com.docmall.dto.Criteria;
 import com.docmall.dto.PageDTO;
+import com.docmall.service.AdCategoryService;
 import com.docmall.service.AdProductService;
 import com.docmall.util.FileUtils;
 
@@ -38,6 +40,8 @@ import lombok.extern.log4j.Log4j;
 @RequiredArgsConstructor
 public class AdProductController {
 	private final AdProductService adProductService;
+	private final AdCategoryService adCategoryService;
+	
 
 //	메인 및 썸네일 업로드 폴더 경로 주입작업
 	@Resource(name = "uploadPath") // servlet-context.xml에서 bean이름 참조
@@ -233,14 +237,55 @@ public class AdProductController {
 	@GetMapping("/pro_edit")
 	public void pro_edit(@ModelAttribute("cri")
 	Criteria cri, Integer pro_num, Model model) throws Exception{
+		ProductVO productVO = adProductService.pro_edit(pro_num);
+		productVO.setPro_up_folder(productVO.getPro_up_folder().replace("\\", "/"));
+		model.addAttribute("productVO",productVO);
 		
 //		선택한 상품정보
-		ProductVO productVO = adProductService.pro_edit(pro_num);
-		model.addAttribute("productVO",productVO);
+		CategoryVO firstCategory = adCategoryService.get(productVO.getCg_code());
+		model.addAttribute("fist_category",firstCategory);
 		
 //		1차 카테고리
 //		상품카테고리에서 2차 카테고리를 이용한 1차 카테고리 정보를 참조
-		model.addAttribute("first_category",adProductService.get(productVO.getCg_code()));
+		model.addAttribute("second_categoryList",adCategoryService.getSecondCategoryList(firstCategory.getCg_parent_code()));
+	}
+	@PostMapping("pro_edit")
+	public String pro_edit (Criteria cri,ProductVO vo, MultipartFile uploadFile, RedirectAttributes rttr)throws Exception {
+//		상품리스트에서 사용할 정보(검색,페이징정보)
+		log.info("cri" + cri);
+//		상품수정내용
+		log.info("vo" + vo);
+		
+//		파일이 변경될 경우 해야 할 작업 1)기존 이미지 파일 삭제, 2)업로드 작업
+//		참고>클라이언트 파일명을 DB에 저장하는 부분
+//		if(uploadFile.getSize() > 0)으로도 첨부파일을 확인할 수 있다.
+		if(!uploadFile.isEmpty()) {
+//			기존 이미지 삭제 
+			FileUtils.deleteFile(uploadPath, vo.getPro_up_folder(), vo.getPro_img());
+//			업로드 작업 
+			String dateFolder = FileUtils.getDateFolder();
+			String savedFileName = FileUtils.uploadFile(uploadPath, dateFolder, uploadFile);
+//			DB에 저장할 새로운 날짜 폴더명 및 이미지명 갱신
+			vo.setPro_img(savedFileName);
+			vo.setPro_up_folder(dateFolder);
+
+		}
+		
+//		DB연동 작업
+		
+		adProductService.pro_edit(vo);
+		
+		
+		return "redirect:/admin/product/pro_list" + cri.getListLink();
 	}
 	
-}
+	@PostMapping("/pro_delete")
+	public String pro_delete(Criteria cri, Integer pro_num)
+			throws Exception {
+		
+		adProductService.pro_delete(pro_num);
+		
+		return "redirect:/admin/product/pro_list" + cri.getListLink();
+	}
+	
+}	

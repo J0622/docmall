@@ -163,19 +163,32 @@
 		WHERE 
 			PRO_NUM = #{pro_num}
 	 </select>
+	 <update id="pro_edit_ok" parameterType="com.docmall.domain.ProductVO">
+	 	UPDATE 
+	 		PRODUCT_TBL 
+	 	SET 
+		 	CG_CODE = #{cg_code}, 
+		 	PRO_NAME = #{pro_name}, 
+		 	PRO_PRICE = #{pro_price}, 
+		 	PRO_DISCOUNT = #{pro_discount}, 
+		 	PRO_PUBLISHER = #{pro_publisher},
+			PRO_CONTENT = #{pro_content}, 
+			PRO_UP_FOLDER = #{pro_up_folder}, 
+			PRO_IMG = #{pro_img}, 
+			PRO_AMOUNT = #{pro_amount}, 
+			PRO_BUY = #{pro_buy},
+			PRO_UPDATEDATE = SYSDATE 	
+		WHERE 
+			PRO_NUM = #{pro_num}
+	 </update>
 	 
-	 <!-- 2차 카테고리가 보유한 1차 카테고리의 정보 -->
-	 <select id="get" parameterType="Integer" resultType="com.docmall.domain.CategoryVO">
-	 	
-	 	SELECT 
-	 		CG_CODE, 
-	 		CG_PARENT_CODE, 
-	 		CG_NAME 
-	 	FROM 
-	 		CATEGORY_TBL 
-	 	WHERE 
-	 		CG_CODE = #{cg_code}
-	 	
-	 	
-	 </select>
+	 <delete id="pro_delete" parameterType="Integer">
+		DELETE FROM
+			PRODUCT_TBL
+		WHERE
+			PRO_NUM = #{pro_num}
+
+	 </delete>
+	 
+	 
 </mapper>

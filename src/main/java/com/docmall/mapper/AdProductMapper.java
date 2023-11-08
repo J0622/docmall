@@ -29,6 +29,7 @@ public interface AdProductMapper {
 	
 	ProductVO pro_edit(Integer pro_num);
 	
-	CategoryVO get(Integer cg_code);
+	void pro_edit_ok(ProductVO vo);
 	
+	void pro_delete(Integer pro_num);
 }
