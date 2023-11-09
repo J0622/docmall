@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.docmall.domain.MemberVO;
@@ -147,7 +148,7 @@ public class MemberController {
 
 //		회원수정 페이지
 	@PostMapping("/confirmPw")
-	public String confirmPw(LoginDTO dto, RedirectAttributes rttr)throws Exception {
+	public String confirmPw(LoginDTO dto, RedirectAttributes rttr) throws Exception {
 		log.info("회원수정을 위한 인증: " + dto);
 
 		MemberVO db_vo = memberService.login(dto.getMbsp_id());
@@ -206,7 +207,6 @@ public class MemberController {
 
 		return "redirect:/";
 	}
-	
 
 //		마이페이지
 	@GetMapping("/mypage")
@@ -238,7 +238,7 @@ public class MemberController {
 				session.invalidate();
 //				회원탈퇴 작업 할것
 				memberService.delete(dto.getMbsp_id());
-				
+
 			} else {
 				url = "/member/delConfirmPw";
 				msg = "비밀번호가 일치하지 않습니다.";
@@ -252,12 +252,44 @@ public class MemberController {
 
 		return "redirect:" + url;
 	}
-	
-	
 
+	@GetMapping("/find_id")
+	public String findId() {
+		// 처리할 내용
+		return "/member/find_id";
+	}
 
-	
-	
-	
-	
+	@PostMapping("/find_id")
+	public String findId(@RequestParam("mbsp_name") String mbsp_name, @RequestParam("mbsp_email") String mbsp_email,
+			Model model) {
+
+		String foundId = memberService.findId(mbsp_name, mbsp_email);
+
+		
+
+		if (foundId != null) {
+			model.addAttribute("foundId", foundId);
+			return "/member/find_id_result";
+		} else {
+			model.addAttribute("errorMessage", "해당 정보와 일치하는 회원을 찾을 수 없습니다.");
+			return "/member/find_id_error";
+		}
+	}
+
+	public String findIdResult(@RequestParam("mbsp_name") String mbsp_name,
+			@RequestParam("mbsp_email") String mbsp_email, Model model) {
+
+		String foundId = memberService.findId(mbsp_name, mbsp_email);
+		
+		log.info("mbsp_name: {}, mbsp_email: {}");
+		
+		if (foundId != null) {
+			model.addAttribute("foundId", foundId);
+			return "/member/find_id_result";
+		} else {
+			model.addAttribute("errorMessage", "해당 정보와 일치하는 회원을 찾을 수 없습니다.");
+			return "/member/find_id_result";
+		}
+	}
+
 }

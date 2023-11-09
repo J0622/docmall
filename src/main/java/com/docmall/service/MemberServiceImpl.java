@@ -49,6 +49,12 @@ public class MemberServiceImpl implements MemberService {
 		memberMapper.delete(mbsp_id);
 	}
 
+	@Override
+	public String findId(String mbsp_name, String mbsp_email) {
+		// TODO Auto-generated method stub
+		return memberMapper.findId(mbsp_name, mbsp_email);
+	}
+
 
 
 

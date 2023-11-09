@@ -67,7 +67,7 @@ desired effect
     			<div class="box box-primary">
 					<div class="box-header with-border">
 						<h3 class="box-title mt-5">Product Edit</h3>
-						<form id="actionForm" action="" method="get">
+						<form id="actionForm" action="/admin/product/pro_list" method="post">
 							<input type="hidden" name="pageNum" id="pageNum" value="${cri.pageNum}" />
 							<input type="hidden" name="amount"  id="amount" value="${cri.amount}" />
 							<input type="hidden" name="type" id="type" value="${cri.type}" />

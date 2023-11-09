@@ -79,6 +79,7 @@
 	</delete>
 	
 	<!-- 아이디 찾기 -->
+	<!-- 
 	<select id="findId" resultType="String">
 		SELECT * 
 		FROM
@@ -94,7 +95,17 @@
 			MBSP_TBL 
 		WHERE 
 			MBSP_EMAIL = #{mbsp_email}
-	</select>
-
+	</select>-->
+	
+	 <select id="findId" resultType="String">
+        <![CDATA[
+            SELECT 
+            	MBSP_ID
+            FROM 
+            	MBSP_TBL
+            WHERE 
+            	MBSP_NAME = #{mbsp_name} AND MBSP_EMAIL = #{mbsp_email}
+        ]]>
+    </select>
 	
 </mapper>

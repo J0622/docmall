@@ -15,5 +15,5 @@ public interface MemberService {
 	
 	void delete(String mbsp_id);
 
-    
+	String findId(String mbsp_name, String mbsp_email);
 }

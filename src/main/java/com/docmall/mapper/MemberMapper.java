@@ -1,5 +1,7 @@
 package com.docmall.mapper;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.docmall.domain.MemberVO;
 
 public interface MemberMapper {
@@ -16,7 +18,5 @@ public interface MemberMapper {
 	
 	void delete(String mbsp_id);
 	
-	String findId(String mbsp_email);
-	
-    int findIdCheck(String mbsp_email);
+	String findId(@Param("mbsp_name")String mbsp_name,@Param("mbsp_email") String mbsp_email);
 }

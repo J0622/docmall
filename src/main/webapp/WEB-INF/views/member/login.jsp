@@ -73,6 +73,8 @@
 							<div class="box-footer">
 								<!--button,submit 모두 자바스크립트 함수에서 사용가능-->
 								<button type="submit" class="btn btn-primary" id="btnlogin">로그인</button>
+								<a href="/member/find_id" class="btn btn-primary">아이디  찾기</a>
+								<a href="/member/find_pw" class="btn btn-primary">비밀번호찾기 찾기</a>
 							</div>
 						</form>
 					</div>

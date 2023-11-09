@@ -165,6 +165,7 @@ public class AdProductController {
 		model.addAttribute("pageMaker", new PageDTO(cri, totalcount));
 
 	}
+	
 
 //	상품 리스트에서 보여줄 이미지
 //	ajax 작업 진행시  @ResponseBody 어노테이션 사용
