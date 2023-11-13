@@ -67,7 +67,7 @@ desired effect
     			<div class="box box-primary">
 					<div class="box-header with-border">
 						<h3 class="box-title mt-5">Product Edit</h3>
-						<form id="actionForm" action="/admin/product/pro_list" method="post">
+						<form id="actionForm" action="/admin/product/pro_list" method="get">
 							<input type="hidden" name="pageNum" id="pageNum" value="${cri.pageNum}" />
 							<input type="hidden" name="amount"  id="amount" value="${cri.amount}" />
 							<input type="hidden" name="type" id="type" value="${cri.type}" />
@@ -75,11 +75,15 @@ desired effect
 						</form>
 					</div>
 					<!-- 절대경로 /board/register -->
-					<form role="form" method="post" action="/admin/product/pro_edit" enctype="multipart/form-data">
+					<form role="form" method="post" action="" enctype="multipart/form-data">
 						<div class="box-body">
 						<div class="form-group row">
 						  <label for="title" class="col-sm-2 col-form-label">카테고리</label>
 			              <div class="col-sm-3">
+			              	<input type="hidden" name="pageNum" id="pageNum" value="${cri.pageNum}" />
+							<input type="hidden" name="amount"  id="amount" value="${cri.amount}" />
+							<input type="hidden" name="type" id="type" value="${cri.type}" />
+							<input type="hidden" name="keyword" id="keyword" value="${cri.keyword}" />
 			                <select class="form-control" id="firstCategory">
 			                  <option>1차카테고리 선택</option>
 			                  <c:forEach items="${firstCategoryList }" var="categoryVO">

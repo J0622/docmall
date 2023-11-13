@@ -22,7 +22,7 @@
 				let str = '<ul class="nav justify-content-center" id="second_category">';
 				for(let i=0; i<category.length; i++){
 					str += '<li class="nav-item">';
-					str += '<a class="nav-link active" href="#" data-cg_code="'+ category[i].cg_code +'">'+ category[i].cg_name +'</a>';
+					str += '<a class="nav-link active" href="#" data-cg_code="'+ category[i].cg_code + '"data-cg_name="'+ category[i].cg_name + '">'+ category[i].cg_name +'</a>';
 					str += '</li>';
 				}
 				str += '</ul>';
@@ -35,9 +35,12 @@
 			// 2차 카테고리 선택
 			// [중요] 동적태그에 이벤트를 사용할때 반드시 동적태그 참조 선택자를 사용해야 한다.
 			// $("정적태그 참조 선택자").on("click", "동적태그 참조 선택자", function()
-		$("div#category_menu").on("click", "ul#second_category", function(){
-			console.log("2차 카테고리 작업 테스트");
-
+		$("div#category_menu").on("click", "ul#second_category li a", function(e){
+			// console.log("2차 카테고리 작업 테스트");
+			let cg_code = $(this).data("cg_code");
+			let cg_name = $(this).data("cg_name");
+			// ${cg_code}이 부분은 jsp에서 사용할 경우 jsp는 EL문법으로 변환해서 사용해야 한다.
+			location.href = `/user/product/pro_list?cg_code=${cg_code}&cg_name=${cg_name}`; 
 		});
 
 

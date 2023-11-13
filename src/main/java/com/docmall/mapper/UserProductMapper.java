@@ -9,7 +9,7 @@ import com.docmall.dto.Criteria;
 
 public interface UserProductMapper {
 //	2차 카테고리별 상품리스트(페이징 정보 사용, 검색 제외)
-	List<ProductVO> pro_list(@Param("") Integer cg_code,@Param("") Criteria cri);
+	List<ProductVO> pro_list(@Param("cg_code") Integer cg_code,@Param("cri") Criteria cri);
 	
 	int getTotalCount(Integer cg_code);
 } 

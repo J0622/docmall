@@ -6,7 +6,7 @@
 	<mapper namespace="com.docmall.mapper.UserProductMapper">
 
 	<select id="pro_list" resultType="com.docmall.domain.ProductVO"
-		parameterType="com.docmall.dto.Criteria">
+		parameterType="map">
 		<![CDATA[
 		select
             PRO_NUM, 
@@ -47,22 +47,19 @@
 			CG_CODE = #{cg_code}
 			and
 			rownum <= #{cri.pageNum} * #{cri.amount}
-			
-		<![CDATA[	
-			
-			rownum <= #{pageNum} * #{amount}
 		)
-			where rn > (#{pageNum} -1) * #{amount} 
+			where 
+				rn > (#{cri.pageNum} -1) * #{cri.amount} 
 		]]>
 	</select>
 	
 	<select id="getTotalCount" resultType="int">
-		SELECT
-			COUNT(*)
-		FROM
+		select 
+			count(*) 
+		from 
 			PRODUCT_TBL 
-		WHERE 
-			CG_CODE = #{cg_code}	
+		where
+			CG_CODE = #{cg_code}
 	</select>
 	
 	
