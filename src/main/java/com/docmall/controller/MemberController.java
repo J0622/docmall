@@ -8,12 +8,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.docmall.domain.MemberVO;
+import com.docmall.dto.EmailDTO;
 import com.docmall.dto.LoginDTO;
 import com.docmall.service.MemberService;
 
@@ -64,7 +66,7 @@ public class MemberController {
 
 //	회원정보 저장 및 저장 후 다른 주소로 이동(redirect)
 	@PostMapping("/join")
-	public String join(MemberVO vo, RedirectAttributes rttr) {
+	public String join(MemberVO vo, RedirectAttributes rttr)throws Exception {
 
 		log.info("회원 정보: " + vo);
 
@@ -291,5 +293,8 @@ public class MemberController {
 			return "/member/find_id_result";
 		}
 	}
+	
+
+
 
 }

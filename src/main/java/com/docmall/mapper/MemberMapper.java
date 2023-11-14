@@ -19,4 +19,5 @@ public interface MemberMapper {
 	void delete(String mbsp_id);
 	
 	String findId(@Param("mbsp_name")String mbsp_name,@Param("mbsp_email") String mbsp_email);
+	
 }

@@ -78,25 +78,6 @@
 	    	MBSP_ID = #{mbsp_id}
 	</delete>
 	
-	<!-- 아이디 찾기 -->
-	<!-- 
-	<select id="findId" resultType="String">
-		SELECT * 
-		FROM
-			MBSP_TBL 
-		WHERE 
-			MBSP_EMAIL = #{mbsp_email}
-	</select>
-	
-	<select id="findIdCheck" resultType="int">
-		SELECT 
-			count(*) 
-		FROM 
-			MBSP_TBL 
-		WHERE 
-			MBSP_EMAIL = #{mbsp_email}
-	</select>-->
-	
 	 <select id="findId" resultType="String">
         <![CDATA[
             SELECT 
@@ -107,5 +88,6 @@
             	MBSP_NAME = #{mbsp_name} AND MBSP_EMAIL = #{mbsp_email}
         ]]>
     </select>
+
 	
 </mapper>

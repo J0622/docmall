@@ -57,12 +57,12 @@
 				<div class="col-md-3">
 					<div class="card mb-4 shadow-sm">
 						<img width="100%" height="225"
-							src="/user/product/imageDisplay?dateFolderName=${productVO.pro_up_folder }&fileName=${productVO.pro_img }">
+							src="/user/product/imageDisplay?dateFolderName=${productVO.pro_up_folder }&fileName=${productVO.pro_img }">${productVO.pro_up_folder }${productVO.pro_img }
 						<div class="card-body">
 							<p class="card-text">${productVO.pro_name }</p>
 							<div class="d-flex justify-content-between align-items-center">
 								<div class="btn-group">
-									<button type="button" name="btn_cart_add" class="btn btn-sm btn-outline-secondary">Cart</button>
+									<button type="button" name="btn_cart_add" data-pro_num="${productVO.pro_num}" class="btn btn-sm btn-outline-secondary">Cart</button>
 									<button type="button" name="btn_buy" class="btn btn-sm btn-outline-secondary">Buy</button>
 								</div>
 								<small class="text-muted"> <fmt:formatNumber
@@ -139,7 +139,24 @@
 		});
 		$("button[name='btn_cart_add']").on("click", function(){
 			console.log("장바구니");
-			
+
+			$.ajax({
+				url: '/user/cart/cart_add',
+				type:'post',
+				data: {pro_num: $(this).data('pro_num') ,cart_amount:1 },
+				dataType : 'text',
+				success: function(result){
+						if(result == "success"){
+							alert("장바구니에 추가됨");
+							if(confirm("장바구니로 이동하시겠습니다."));
+							location.href = "/user/cart/cart_list";
+						}
+						
+
+					}
+				});
+
+				
 		});
 		
 		

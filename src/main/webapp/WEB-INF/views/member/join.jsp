@@ -268,185 +268,125 @@
 	<%@include file="/WEB-INF/views/comm/plugin.jsp"%>
 	<ul id="emailExamples"></ul>
 	<script>
-		// jquery.slim.min.js파일에 제이쿼리 명령어가 정의되어 있음.
-		// $를 별칭이라고 보면되고 jQuery()가 원래이름임
-		// ready() 이벤트 메소드 : 브라우저가 html 태그를 모두 읽고난 후에 동작하는 이벤트 특징
-		// 자바스크립트 이벤트 등록: w3school, mdn참조
-		// class는 .로 작성 id는 #으로 작성
+  // jquery.slim.min.js 파일에 jquery 명령어가 정의되어 있음
+  // 별칭: $  -> jQuery()함수
+  // ready()이벤트 메서드 : 브라우저가 html태그를 모두 읽고난 후에 동작하는 이벤트 특징.
+  // 자바스크립트 이벤트 등록 : https://www.w3schools.com/js/js_htmldom_eventlistener.asp
+  $(document).ready(function() {
+    
+    let useIDCheck = false; // 아이디 중복체크 사용유무 확인
+    
+    // document.getElementById("idCheck");
+    $("#idCheck").click(function() {
+      // alert("아이디 중복체크");
+      if($("#mbsp_id").val() == "") {
+        alert("아이디를 입력하세요.");
+        $("#mbsp_id").focus();
+        return;
+      }
 
-		$(document).ready(function() {
+      // 아이디 중복체크
+      $.ajax({
+        url : '/member/idCheck',
+        type: 'get',
+        dataType: 'text',
+        data: {mbsp_id : $("#mbsp_id").val()},
+        success: function(result) {
+          if(result == "yes") {
+            alert("아이디 사용가능");
+            useIDCheck = true;
+          }else {
+            alert("아이디 사용불가능");
+            useIDCheck = false;
+            $("#mbsp_id").val(""); // 아이디 텍스트박스를 값을 지움
+            $("#mbsp_id").focus(); // 포커스
+          }
+        }
+      });
+    });
 
-			// document getElementById("idCheck");
-			let useIDCheck = false;
+    // 메일인증 요청
+    $("#mailAuth").click(function() {
 
-			$("#idCheck").click(function() {
-				// alert("아이디 중복체크 테스트");
+      if($("#mbsp_email").val() == "") {
+        alert("이메일을 입력하세요.");
+        $("#mbsp_email").focus();
+        return;
+      }
 
-				// 아이디 중복체크 사용 유무를 체크 (사용자가 반드시 사용하도록 하기위함.)
+      $.ajax({
+        url: '/email/authCode',
+        type: 'get',
+        dataType: 'text', // 스프링에서 보내는 데이터의 타입.  'success'
+        data: {receiverMail: $("#mbsp_email").val()},
+        success: function(result) {
+          if(result == "success") {
+            alert("인증메일이 발송되었습니다. 메일 확인바랍니다.");
+          }
+        }
 
-				// 아이디의 값이 null이면 alert 동작하는 구문
-				if ($("#mbsp_id").val() == "") {
-					alert("아이디를 입력하세요.");
-					$("#mbsp_id").focus();
-					return;
-				}
+      });
+    });
 
-				// 아이디 중복체크
-				$.ajax({
-					url : '/member/idCheck',
-					type : 'get',
-					dataType : 'text',
-					data : {
-						mbsp_id : $("#mbsp_id").val()
-					},
-					success : function(result) {
-						if (result == "yes") {
-							alert("아이디 사용가능");
-							useIDCheck = true;
-						} else {
-							alert("사용 불가능한 아이디")
-							useIDCheck = false;
-							$("#mbsp_id").val(""); // 아이디 텍스트 박스를 공백으로 만들어주는 기능
-							$("#mbsp_id").focus(); // 박스에 포커스
-						}
-					}
+    let isConfirmAuth = false; // 메일인증을 안한 상태
 
-				});
-			});
-			// 메일인증 요청
-			$("#mailAuth").click(function() {
+    //인증확인 <button type="button" class="btn btn-outline-info" id="btnConfirmAuth">인증확인</button>
+    $("#btnConfirmAuth").click(function() {
 
-				if ($("#mbsp_email").val() == "") {
-					alert("이메일을 입력하세요.")
-					$("#mbsp_email").focus();
+      if($("#authCode").val() == "") {
+        alert("인증코드를 입력하세요.");
+        $("#authCode").focus();
+        return;
+      }
 
-				}
+      //인증확인 요청
+      $.ajax({
+        url: '/email/confirmAuthCode',
+        type: 'get',
+        dataType: 'text',
+        data : {authCode : $("#authCode").val()},
+        success: function(result) {
+          if(result == "success") {
+            alert("인증 성공");
+            isConfirmAuth = true;
+          }else if(result == "fail") {
+            alert("인증코드가 틀립니다. 확인바랍니다.");
+            $("#authCode").val("");
+            isConfirmAuth = false;
+          }else if(result == "request") {
+            alert("메일인증 요청을 다시 해주세요");
+            $("#authCode").val("");
+            isConfirmAuth = false;
+          }
+        }
+      });
 
-				$.ajax({
-					url : '/email/authCode',
-					type : 'get', // authCode가 get방식이므로 
-					dataType : 'text', // success를 확인해서 text
-					// 스프링에서 받을 파라미터명 : 사용자가 작성해서 전송한 데이터
-					data : {
-						receiverMail : $("#mbsp_email").val()
-					},
-					success : function(result) {
-						if (result == "success") {
-							alert("인증메일이 발송되었습니다.");
-						}
-					}
+    });
 
-				});
-			});
+    // form 태그참조. <form role="form" id="joinForm" method="post" action="">
+    let joinForm = $("#joinForm");  
 
-			// 인증코드 변수
-			let isConfirmAuth = false;
+    // 회원가입버튼
+    $("#btnJoin").click(function() {
 
-			// 인증확인
-			// 참조 <button type="button" class="btn btn-info" id="btnConfirmAuth">
-			// click했을때 동작할 익명함수 작성
-			$("#btnConfirmAuth").click(function() {
-				if ($("#authCode").val() == "") {
-					alert("인증코드를 입력하세요");
-					$("#authCode").focus();
-					return;
-				}
-				// 실질적인 기능 작업
-				// 인증코드 확인요청
-				$.ajax({
-					url : '/email/confirmAuthCode',
-					type : 'get',
-					dataType : 'text',
-					data : {
-						authCode : $("#authCode").val()
-					},
-					success : function(result) {
-						if (result == "success") {
-							alert("인증 성공");
-							isConfirmAuth = true;
-						} else if (result == "fail") {
-							alert("올바르지 않은 인증코드입니다.");
-							$("#authCode").val("");
-							isConfirmAuth = false;
-						} else if (result == "request") {
-							alert("만료된 인증코드입니다.");
-							$("#authCode").val("");
-							isConfirmAuth = false;
-						}
-					}
-				});
-			});
+      // 회원가입 유효성검사
 
-			
-			// 폼태그 참조
-			// <form role="form" id="joinForm" method="post" action="">
-			let joinForm = $("#joinForm");
+      if(!useIDCheck) {
+        alert("아이디 중복체크 바랍니다.");
+        return;
+      }
 
-			// 회원가입 버튼
-			$("#btnJoin").click(function() {
-				let reg_id = RegExp(/^[a-zA-Z]+[0-9a-zA-Z]{5,15}$/);
-				let reg_pw = RegExp(/^.*(?=^.{9,15}$)(?=.*\d)(?=.*[a-z])(?=.*[~!@#$%^&*()_+{}|:<>?]).*$/);
-				let reg_email = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
-				
-				// 회원가입 유효성 검사
-				if (!useIDCheck) {
-					alert("아이디 중복체크가 필요합니다.");
-					return;
-				}
-				if ($("#mbsp_id").val() == "") {
-					alert("아이디를 입력하세요.");
-					$("#mbsp_id").focus();
-					return;
-				}
+      if(!isConfirmAuth) {
+        alert("메일인증 확인바랍니다.");
+        return;
+      }
 
-				if (!reg_id.test($("#mbsp_id").val())) {
-					alert("알파벳 대소문자로 시작하는 아이디를 입력하세요 (5글자~15글자 범위).");
-					$("#mbsp_id").focus();
-					return;
-				}
+      // 폼 전송작업
+      joinForm.submit();
+    });
 
-				if ($("#mbsp_password").val() == "") {
-					alert("비밀번호를 입력하세요.");
-					$("#mbsp_password").focus();
-					return;
-				}
-
-				if ($("#mbsp_name").val() == "") {
-					alert("이름을 입력하세요.");
-					$("#mbsp_name").focus();
-					return;
-				}
-
-				if ($("#mbsp_email").val() == "") {
-					alert("이메일을 입력하세요.");
-					$("#mbsp_name").focus();
-					return;
-				}
-
-
-				if (!isConfirmAuth) {
-					alert("메일인증이 필요합니다.");
-					return;
-				}
-
-				if ($("#mbsp_phone").val() == "") {
-					alert("전화번호를 입력하세요.");
-					$("#mbsp_phone").focus();
-					return;
-				}
-				
-
-				if (useIDCheck && isConfirmAuth) {
-					alert("회원가입이 완료되었습니다.")
-
-				}
-				// 폼 전송작업
-				joinForm.submit();
-
-			});
-
-		});
-	</script>
+  });
+</script>
 </body>
 
 
