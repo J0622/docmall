@@ -17,5 +17,7 @@ public interface MemberService {
 
 	String findId(String mbsp_name, String mbsp_email);
 	
-
+	void updatePw(String mbsp_id, String mbsp_password);
+	
+	MemberVO checkUserIdAndEmail(String mbsp_id,String mbsp_email);
 }

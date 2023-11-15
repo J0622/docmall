@@ -88,6 +88,21 @@
             	MBSP_NAME = #{mbsp_name} AND MBSP_EMAIL = #{mbsp_email}
         ]]>
     </select>
-
-	
+    
+	    <update id="updatePw">
+	        UPDATE 
+	        	MBSP_TBL
+	        SET 
+	        	MBSP_PASSWORD = #{mbsp_password}
+	        WHERE 
+	        	MBSP_ID = #{mbsp_id}
+	    </update>
+	<select id="checkUserIdAndEmail" resultType="com.docmall.domain.MemberVO">
+       SELECT 
+       		MBSP_ID
+       FROM 
+       		MBSP_TBL
+       WHERE
+       		MBSP_ID=#{mbsp_id} AND MBSP_EMAIL=#{mbsp_email}
+    </select>
 </mapper>

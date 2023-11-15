@@ -14,6 +14,7 @@ public class MemberServiceImpl implements MemberService {
 //	자동주입
 //	@RequiredArgsConstructor : memberMapper필드를 이용한 주입
 	private final MemberMapper memberMapper;
+	
 
 	@Override
 	public String idCheck(String mbsp_id) {
@@ -53,6 +54,18 @@ public class MemberServiceImpl implements MemberService {
 	public String findId(String mbsp_name, String mbsp_email) {
 		// TODO Auto-generated method stub
 		return memberMapper.findId(mbsp_name, mbsp_email);
+	}
+
+	@Override
+	public void updatePw(String mbsp_id, String mbsp_password) {
+		// TODO Auto-generated method stub
+		memberMapper.updatePw(mbsp_id, mbsp_password);
+	}
+
+	@Override
+	public MemberVO checkUserIdAndEmail(String mbsp_id, String mbsp_email) {
+		// TODO Auto-generated method stub
+		return memberMapper.checkUserIdAndEmail(mbsp_id, mbsp_email);
 	}
 
 

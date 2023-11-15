@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +34,8 @@ public class MemberController {
 
 	private final PasswordEncoder passwordEncoder;
 
+	private final BCryptPasswordEncoder UpdatepasswordEncoder;
+	
 	@GetMapping("/join")
 	public void join() {
 		log.info("called... join");
@@ -294,7 +297,18 @@ public class MemberController {
 		}
 	}
 	
+	@GetMapping("/update_password")
+    public String showChangePasswordForm() {
+        return "change-password";
+    }
 
+    @PostMapping("/update_password")
+    public String changePassword(@RequestParam String mbsp_password, Model model) {
+        String newEncryptedPassword = passwordEncoder.encode(mbsp_password);
+//        memberService.updatePw(mbsp_id, mbsp_password);
+        model.addAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
+        return "/";
+    }
 
 
 }

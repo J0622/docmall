@@ -20,4 +20,7 @@ public interface MemberMapper {
 	
 	String findId(@Param("mbsp_name")String mbsp_name,@Param("mbsp_email") String mbsp_email);
 	
+	 void updatePw(@Param("mbsp_id") String mbsp_id, @Param("mbsp_password") String mbsp_password);
+	
+	 MemberVO checkUserIdAndEmail(@Param("mbsp_id") String mbsp_id, @Param("mbsp_email") String mbsp_email);
 }

@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.docmall.domain.CartVO;
@@ -68,7 +69,7 @@ public class CartController {
 		for(int i=0; i<cart_list.size(); i++) {
 			CartDTOList vo = cart_list.get(i);
 			vo.setPro_up_folder(vo.getPro_up_folder().replace("\\", "/"));
-			cart_total_price += ((double)vo.getPro_price() - (vo.getPro_price() * (vo.getPro_discount() * 1/100))) * (double)vo.getCart_amount();
+			cart_total_price += ((double)vo.getPro_price() - (vo.getPro_price() * vo.getPro_discount() * 1/100 )) * (double) vo.getCart_amount();
 		}
 		model.addAttribute("cart_list", cart_list);
 		model.addAttribute("cart_total_price", cart_total_price);
@@ -91,6 +92,41 @@ public class CartController {
 		cartService.cart_amount_change(cart_code, cart_amount);
 		
 		entity = new ResponseEntity<String>("success" , HttpStatus.OK);
+		
+		return entity;
+	}
+	
+//	장바구니 목록에서 개별삭제
+	@PostMapping("/cart_list_del")
+	public ResponseEntity<String> cart_list_del(Long cart_code) throws Exception{
+		ResponseEntity<String> entity = null;
+		cartService.cart_list_del(cart_code);
+		entity = new ResponseEntity<String>("success",HttpStatus.OK);
+		return entity;
+	}
+	
+	@GetMapping("/cart_list_del")
+	public String cart_list_del2(Long cart_code) throws Exception{
+		cartService.cart_list_del(cart_code);
+		return "redirect:/user/cart/cart_list";
+	}
+	
+	//장바구니 선택삭제
+	@PostMapping("/cart_sel_delete")
+	public ResponseEntity<String> cart_sel_delete(@RequestParam("cart_code_arr[]") List<Long> cart_code_arr) {
+		ResponseEntity<String> entity = null;
+		
+		//방법1. 하나씩 반복적으로 삭제.
+		/*
+		for(int i=0; i<cart_code_arr.size(); i++) {
+			cartService.cart_delete(cart_code_arr.get(i));
+		}
+		*/
+		
+		//방법2. mybatis foreach : https://java119.tistory.com/85
+		cartService.cart_sel_delete(cart_code_arr);
+		
+		entity = new ResponseEntity<String>("success", HttpStatus.OK);
 		
 		return entity;
 	}
