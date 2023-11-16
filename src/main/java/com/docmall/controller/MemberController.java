@@ -297,18 +297,37 @@ public class MemberController {
 		}
 	}
 	
-	@GetMapping("/update_password")
-    public String showChangePasswordForm() {
-        return "change-password";
-    }
+	 @GetMapping("/reset_password")
+	    public String showResetPasswordForm() {
+	        return "/member/reset_password"; // 비밀번호 재설정 폼을 보여주는 뷰
+	    }
 
-    @PostMapping("/update_password")
-    public String changePassword(@RequestParam String mbsp_password, Model model) {
-        String newEncryptedPassword = passwordEncoder.encode(mbsp_password);
-//        memberService.updatePw(mbsp_id, mbsp_password);
-        model.addAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
-        return "/";
-    }
+	    @PostMapping("/reset_password")
+	    public String resetPassword(@RequestParam String mbsp_id, @RequestParam String mbsp_email, Model model) {
+	        // 입력한 아이디와 이메일이 일치하는 사용자가 있는지 확인
 
+	    	MemberVO user = memberService.checkUserIdAndEmail(mbsp_id, mbsp_email);
+
+	    	 if (user != null) {
+	    	        // 일치하면 새 비밀번호 설정 폼을 보여줌
+	    	        model.addAttribute("mbsp_id", mbsp_id);
+	    	        return "/member/set_new_password";
+	    	    } else {
+	    	        // 일치하지 않으면 에러 메시지를 보여줌
+	    	        model.addAttribute("error", "아이디 또는 이메일이 일치하지 않습니다.");
+	    	        return "/member/reset_password";
+	    	    }
+	    }
+
+	    @PostMapping("/set_new_password")
+	    public String setNewPassword(@RequestParam String mbsp_id, @RequestParam String mbsp_password, Model model) {
+	        // 새로운 비밀번호를 서비스를 통해 업데이트
+	        memberService.updatePw(mbsp_id, mbsp_password);
+
+	        model.addAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
+	        return "/member/reset_password";
+	    }
+    
+    
 
 }

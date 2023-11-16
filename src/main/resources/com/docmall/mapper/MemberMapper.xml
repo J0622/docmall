@@ -97,12 +97,12 @@
 	        WHERE 
 	        	MBSP_ID = #{mbsp_id}
 	    </update>
-	<select id="checkUserIdAndEmail" resultType="com.docmall.domain.MemberVO">
-       SELECT 
-       		MBSP_ID
-       FROM 
-       		MBSP_TBL
-       WHERE
-       		MBSP_ID=#{mbsp_id} AND MBSP_EMAIL=#{mbsp_email}
-    </select>
+		<select id="checkUserIdAndEmail" resultType="com.docmall.domain.MemberVO">
+	       SELECT 
+	       		MBSP_ID
+	       FROM 
+	       		MBSP_TBL
+	       WHERE
+	       		MBSP_ID=#{mbsp_id} AND MBSP_EMAIL=#{mbsp_email}
+	    </select>
 </mapper>

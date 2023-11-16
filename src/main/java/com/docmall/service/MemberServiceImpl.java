@@ -63,10 +63,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public MemberVO checkUserIdAndEmail(String mbsp_id, String mbsp_email) {
-		// TODO Auto-generated method stub
+	public MemberVO  checkUserIdAndEmail(String mbsp_id, String mbsp_email) {
+		// 입력한 아이디와 이메일이 일치하는 사용자가 있는지 확인
 		return memberMapper.checkUserIdAndEmail(mbsp_id, mbsp_email);
 	}
+
+	
 
 
 
