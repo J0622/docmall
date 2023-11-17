@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!doctype html>
 <html lang="en">
@@ -74,7 +75,7 @@ legend {
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${order_info }" var="cartDTO">
+				<c:forEach items="${order_info }" var="cartDTO" varStatus="status">
 					<tr>
 						<td><img width="50%" height="50"
 							src="/user/cart/imageDisplay?dateFolderName=${cartDTO.pro_up_folder }&fileName=${cartDTO.pro_img}">
@@ -89,6 +90,7 @@ legend {
 			</tbody>
 			<tfoot>
 				<tr>
+					<td colspan="8" style="text-align: right;">상품 총<span id="cart_price_count">%{fn:length(order_info)-1}</span></td>
 					<td colspan="8" style="text-align: right;">주문금액 : 
 					<span id="cart_total_price">${order_price}</span>
 					</td>
@@ -209,15 +211,15 @@ legend {
 						<div class="form-group row">
 							<label for="mbsp_phone" class="col-2">결제방법</label>
 							<div class="col-10">
-								<input type="radio" name="mbsp_phone" id="mbsp_phone">무통장입금 
-								<input type="radio" name="mbsp_phone" id="mbsp_phone"> <img src="/image/payment.png">
+								<input type="radio" name="paymethod" id="paymethod1" value="nobank">무통장입금 
+								<input type="radio" name="paymethod" id="paymethod2" value="kakaopay"> <img src="/image/payment.png">
 							</div>
 						</div>
 					</fieldset>
 
 					<div class="form-group row text-center">
 						<div class="col-12">
-							<button type="button" class="btn btn-primary">주문및결제하기</button>
+							<button type="button" class="btn btn-primary" id="btn_order">주문및결제하기</button>
 						</div>
 					</div>
 				</form>
@@ -351,7 +353,7 @@ legend {
 					$("#mbsp_phone").val($("#b_mbsp_phone").val());
 
 				}else{
-					$("#mbsp_name").val("");
+					$("#mbsp_name").val("#");
 					$("#sample2_postcode").val("");
 					$("#sample2_address").val("");
 					$("#sample2_detailAddress").val("");
@@ -359,6 +361,37 @@ legend {
 				}
 
 
+			});
+			$("#btn_order").on("click", function(){
+				// 주문테이블 주문상세 테이블 결제테이블 저장에 필요한 정보구성
+				// 카카오 페이 결제에 필요한 정보구성
+				// 스프링에서 처리 할수 있는 부분
+				
+
+				$.ajax({
+					url:'/user/order/orderPay',
+					type:'get',
+					data:{
+						paymethod: $("input[name='paymethod']:checked").val(),
+						ord_name: $("#mbsp_name").val(),
+						ord_zipcode: $("input[name='mbsp_zipcode']").val(),
+						ord_addr_basic: $("input[name='mbsp_addr']").val(),
+						ord_addr_detail: $("input[name='mbsp_deaddr']").val(),
+						ord_tel: $("#mbsp_phone").val(),
+						ord_price: 1000, //$("#cart_total_price").text(),
+						totalprice: 1000, //$("#cart_total_price").text(),
+					},
+					dataType:'json',
+					success: function(response){
+						console.log("응답: " + response);
+
+						alert(response.next_redirect_pc_url);
+						location.href = response.next_redirect_pc_url;
+
+
+					}
+
+				});
 			});
 
 		});
