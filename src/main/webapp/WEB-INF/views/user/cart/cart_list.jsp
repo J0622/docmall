@@ -56,7 +56,6 @@
 					<th scope="col">상품명</th>
 					<th scope="col">판매가</th>
 					<th scope="col">수량</th>
-					<th scope="col">할인</th>
 					<th scope="col">합계</th>
 					<th scope="col">비고</th>
 				</tr>
@@ -72,7 +71,6 @@
 						<td>${cartDTO.pro_name }</td>
 						<td><span id="unitPrice">${cartDTO.pro_price }</span></td>
 						<td><input type="number" name="cart_amount" style="width: 35px;" value="${cartDTO.cart_amount }"> <button type="button" name="btn_cart_amount_change" class="btn btn-danger">변경</button></td>
-						<td><span id="unitDiscount">${cartDTO.pro_discount * 1/100 }</span></td>
 						<td><span class="unitTotalPrice" id="unitTotalPrice">${(cartDTO.pro_price - (cartDTO.pro_price * (cartDTO.pro_discount * 1/100))) * cartDTO.cart_amount}</span></td>
 						<td><button type="button" name="btn_ajax_cart_del" class="btn btn-danger">삭제1</button></td>
 						<td><button type="button" name="btn_non_ajax_cart_del" class="btn btn-danger">삭제2</button></td>
@@ -248,6 +246,16 @@
 
 			});
 
+						//사용자정의함수
+				// 콤마제거하기. 연산할 때 사용
+				$.withoutCommas = function(x) {
+					return x.toString().replace(",", "");
+				}
+
+				//3자리마다 콤마찍기. 표시할 때 사용.
+				$.numberWithCommas = function(x) {
+					return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+				}
 		}); 
 
 		function fn_cart_sum_price() {

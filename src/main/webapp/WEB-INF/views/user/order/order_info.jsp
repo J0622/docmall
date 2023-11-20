@@ -83,14 +83,14 @@ legend {
 						<td>${cartDTO.pro_name }</td>
 						<td><span id="unitPrice">${cartDTO.pro_price}</span></td>
 						<td>${cartDTO.cart_amount }</td>
-						<td><span id="unitDiscount">${cartDTO.pro_discount * 1/100 }</span></td>
+						<td><span id="unitDiscount">${cartDTO.pro_discount}%</span></td>
 						<td><span class="unitTotalprice" id="unitTotalprice">${(cartDTO.pro_price - (cartDTO.pro_price * (cartDTO.pro_discount * 1/100))) * cartDTO.cart_amount}</span></td>
 					</tr>
 				</c:forEach>
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="8" style="text-align: right;">상품 총<span id="cart_price_count">%{fn:length(order_info)-1}</span></td>
+					<td colspan="8" style="text-align: right;">상품 총<span id="cart_price_count">${fn:length(order_info)-1}</span></td>
 					<td colspan="8" style="text-align: right;">주문금액 : 
 					<span id="cart_total_price">${order_price}</span>
 					</td>
@@ -213,6 +213,21 @@ legend {
 							<div class="col-10">
 								<input type="radio" name="paymethod" id="paymethod1" value="nobank">무통장입금 
 								<input type="radio" name="paymethod" id="paymethod2" value="kakaopay"> <img src="/image/payment.png">
+							</div>
+						</div>
+						<div class="form-group row" id="nobank_info" style="display: none;">
+							<label for="mbsp_phone" class="col-2">무통장 입금정보</label>
+							<div class="col-10">
+								은행명
+								<select name="pay_nobank" id="pay_nobank">
+									<option value="123-123-1234">신한은행</option>
+									<option value="456-456-4567">국민은행</option>
+									<option value="100-100-1000">NH농협</option>
+									<option value="200-200-2000">우리은행</option>
+								</select><br> 
+								계좌번호<input type="text" name="pay_bankaccount" id="pay_bankaccount" ><br>
+								예금주<input type="text" name="pay_nobank_user" id="pay_nobank_user" ><br>
+								메모<textarea cols="50" rows="3" name="pay_memo" id="pay_memo"></textarea>
 							</div>
 						</div>
 					</fieldset>
@@ -353,7 +368,7 @@ legend {
 					$("#mbsp_phone").val($("#b_mbsp_phone").val());
 
 				}else{
-					$("#mbsp_name").val("#");
+					$("#mbsp_name").val("");
 					$("#sample2_postcode").val("");
 					$("#sample2_address").val("");
 					$("#sample2_detailAddress").val("");
@@ -367,6 +382,9 @@ legend {
 				// 카카오 페이 결제에 필요한 정보구성
 				// 스프링에서 처리 할수 있는 부분
 				
+				let paymethod = $("input[name='paymethod']:checked").val();
+				
+				if(paymethod === 'kakaopay'){
 
 				$.ajax({
 					url:'/user/order/orderPay',
@@ -378,8 +396,8 @@ legend {
 						ord_addr_basic: $("input[name='mbsp_addr']").val(),
 						ord_addr_detail: $("input[name='mbsp_deaddr']").val(),
 						ord_tel: $("#mbsp_phone").val(),
-						ord_price: 1000, //$("#cart_total_price").text(),
-						totalprice: 1000, //$("#cart_total_price").text(),
+						ord_price: $("#cart_total_price").text(),
+						totalprice: $("#cart_total_price").text(),
 					},
 					dataType:'json',
 					success: function(response){
@@ -387,12 +405,61 @@ legend {
 
 						alert(response.next_redirect_pc_url);
 						location.href = response.next_redirect_pc_url;
+					}
+				});
+
+				}else if(paymethod === 'nobank'){
+					$.ajax({
+						url:'/user/order/nobank',
+						type:'get',
+						data:{
+							paymethod: $("input[name='paymethod']:checked").val(),
+							ord_name: $("#mbsp_name").val(),
+							ord_zipcode: $("input[name='mbsp_zipcode']").val(),
+							ord_addr_basic: $("input[name='mbsp_addr']").val(),
+							ord_addr_detail: $("input[name='mbsp_deaddr']").val(),
+							ord_tel: $("#mbsp_phone").val(),
+							ord_price: $("#cart_total_price").text(),
+							totalprice: $("#cart_total_price").text(),
+							pay_nobank_user:$("#pay_nobank_user").val(),
+							pay_nobank: $("#pay_nobank option:selected").text(),
+							pay_bankaccount:$("#pay_bankaccount").val(),
+							pay_memo:$("#pay_memo").val()
+						},
+						dataType:'text',
+						success: function(result){
+							console.log("응답: " + result);
+							
+							if(result == 'success'){
+								alert("무통장 입금 주문완료 되었습니다.");
+								location.href = '/user/order/orderComplete';
+								}
+							}
+
+						});
+					}
+			});
 
 
+			// 무통장 입금 선택시 발생
+			$("input[name='paymethod']").on("click", function(){
+
+				let paymethod = $("input[name='paymethod']:checked").val();
+
+					if(paymethod == "nobank"){
+						$("#nobank_info").show();
+					}else if(paymethod == "kakaopay"){
+						$("#nobank_info").hide();
 					}
 
 				});
-			});
+
+				// 입금은행 선택시 발생
+				$("#pay_nobank").on("change", function(){
+					$("#pay_bankaccount").val($(this).val());
+
+				});
+
 
 		});
 	</script>

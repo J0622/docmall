@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.docmall.domain.MemberVO;
-import com.docmall.domain.OrderDetailVO;
 import com.docmall.domain.OrderVO;
 import com.docmall.domain.PaymentVO;
 import com.docmall.dto.CartDTOList;
@@ -43,13 +44,12 @@ public class OrderController {
 		String mbsp_id = ((MemberVO) session.getAttribute("loginStatus")).getMbsp_id();
 		List<CartDTOList> order_info = cartService.cart_list(mbsp_id);
 
-		double order_price = 0;  
+		int order_price = 0;  
 
 		for (int i = 0; i < order_info.size(); i++) {
 			CartDTOList vo = order_info.get(i);
 			vo.setPro_up_folder(vo.getPro_up_folder().replace("\\", "/"));
-			order_price += ((double) vo.getPro_price() - (vo.getPro_price() * vo.getPro_discount() * 1 / 100))
-					* (double) vo.getCart_amount();
+			order_price += (vo.getPro_price()* vo.getCart_amount());
 		}
 		model.addAttribute("order_info", order_info);
 		model.addAttribute("order_price", order_price);
@@ -60,7 +60,7 @@ public class OrderController {
 //	@ResponseBody사용으로 ajax성격 요청
 //	OrderVO: 주문테이블 , OrderDetailVO: 주문상세테이블
 	@GetMapping(value = "/orderPay", produces = "application/json")
-	public @ResponseBody ReadyResponse payReady(String paymethod, OrderVO o_vo, OrderDetailVO od_vo,PaymentVO p_vo ,int totalprice, HttpSession session)
+	public @ResponseBody ReadyResponse payReady(String paymethod, OrderVO o_vo,PaymentVO p_vo ,int totalprice, HttpSession session)
 			throws Exception {
 		/*
 		 1)주문 정보 구성
@@ -79,22 +79,31 @@ public class OrderController {
 		Long ord_code = (long) orderService.getOrderSeq();
 		o_vo.setOrd_code(ord_code);
 		
-		log.info(paymethod);
-		log.info(o_vo);
+		
+		p_vo.setOrd_code(ord_code);
+		p_vo.setMbsp_id(mbsp_id);
+		p_vo.setPay_method("카카오페이");
+		p_vo.setPay_tot_price(totalprice);
 		
 		o_vo.setOrd_status("주문성공");
+		o_vo.setOrd_status("주문완료");
 		o_vo.setPayment_status("결제완료");
+		
+//		결제방법, 주문정보 로그
+		log.info(paymethod);
+		log.info(o_vo);
+		log.info(p_vo);
 		
 //		주문,주문상세 정보 저장 , 장바구니삭제 (해당기능을 모두 가지고 있음)
 		List<CartDTOList> cart_list = cartService.cart_list(mbsp_id);
-		String itemName = cart_list.get(0).getPro_name() + "외" +String.valueOf(cart_list.size() -1) + " 건";
-		orderService.order_insert(o_vo);
+		String itemName = cart_list.get(0).getPro_name() + "외 " + String.valueOf(cart_list.size() -1) + " 건";
+		orderService.order_insert(o_vo, p_vo);
 		
 //		3) 카카오페이 호출
 		ReadyResponse readyResponse = kakaoServiceImpl.payReady(o_vo.getOrd_code(), itemName, cart_list.size(), mbsp_id, totalprice);
 		
-		log.info(readyResponse.getTid());
-		log.info(readyResponse.getNext_redirect_pc_url());
+		log.info("결제고유번호:" + readyResponse.getTid());
+		log.info("결제요청URL: " + readyResponse.getNext_redirect_pc_url());	
 		
 //		결제 승인요청 작업에 필요한 정보 (
 		session.setAttribute("tid", readyResponse.getTid());
@@ -135,6 +144,41 @@ public class OrderController {
 	@GetMapping("/orderFail")
 	public void orderFail(){
 		
+	}
+	
+//	무통장 입금
+	@GetMapping("/nobank")
+	public ResponseEntity<String> nobank(String paymethod, OrderVO o_vo,PaymentVO p_vo ,int totalprice, HttpSession session) throws Exception{
+		
+		ResponseEntity<String> entity = null;
+		
+		String mbsp_id = ((MemberVO) session.getAttribute("loginStatus")).getMbsp_id();
+		o_vo.setMbsp_id(mbsp_id); // 아이디 값 할당
+		
+//		시퀀스를 주문번호로 사용: 동일한 주문번호 값이 사용
+		Long ord_code = (long) orderService.getOrderSeq();
+		o_vo.setOrd_code(ord_code);
+		
+		
+		
+		o_vo.setOrd_status("주문성공");
+		o_vo.setPayment_status("결제완료");
+		
+		p_vo.setPay_method("무통장 입금");
+		p_vo.setOrd_code(ord_code);
+		p_vo.setMbsp_id(mbsp_id);
+		p_vo.setPay_tot_price(totalprice);
+		p_vo.setPay_nobank_price(totalprice);
+		
+		log.info(paymethod);
+		log.info(o_vo);
+		log.info(p_vo);
+		
+		orderService.order_insert(o_vo, p_vo);
+		
+		entity = new ResponseEntity<String>("success", HttpStatus.OK);
+		
+		return entity;
 	}
 
 }
