@@ -43,7 +43,7 @@ public class OrderController {
 		String mbsp_id = ((MemberVO) session.getAttribute("loginStatus")).getMbsp_id();
 		List<CartDTOList> order_info = cartService.cart_list(mbsp_id);
 
-		double order_price = 0;
+		double order_price = 0;  
 
 		for (int i = 0; i < order_info.size(); i++) {
 			CartDTOList vo = order_info.get(i);
