@@ -58,7 +58,7 @@ public class CartController {
 		String mbsp_id = ((MemberVO) session.getAttribute("loginStatus")).getMbsp_id();
 		List<CartDTOList> cart_list = cartService.cart_list(mbsp_id);
 		
-		double cart_total_price = 0;
+		int cart_total_price = 0;
 		
 //		cart_list.forEach(vo -> {
 //			vo.setPro_up_folder(vo.getPro_up_folder().replace("\\", "/"));

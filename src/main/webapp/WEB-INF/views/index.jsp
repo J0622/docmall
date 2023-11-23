@@ -112,6 +112,6 @@
 	<%@include file="/WEB-INF/views/comm/plugin.jsp"%>
 	
 	<!-- 카테고리 메뉴 작업 소스 -->
-	<script src="/js/categoty_menu.js"></script>
+	<script src="/js/category_menu.js"></script>
 </body>
 </html>
