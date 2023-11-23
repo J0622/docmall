@@ -142,7 +142,7 @@
       <div id="tabs_pro_detail">
         <ul>
           <li><a href="#tabs-prodetail">상품설명</a></li>
-          <li><a href="#tabs-proreview">상품후기</a></li>
+          <li><a href="#tabs-proreview">상품후기  </a></li>
         </ul>
         <div id="tabs-prodetail">
           <p>${productVO.pro_content }</p>

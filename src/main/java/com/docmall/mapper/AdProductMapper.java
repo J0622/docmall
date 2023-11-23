@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.docmall.domain.CategoryVO;
+import com.docmall.domain.MemberVO;
 import com.docmall.domain.ProductVO;
 import com.docmall.dto.Criteria;
 import com.docmall.dto.ProductDTO;
@@ -14,6 +15,8 @@ public interface AdProductMapper {
 	void pro_insert(ProductVO vo);
 		
 	List<ProductVO>pro_list(Criteria cri);
+	
+	
 	
 	int getTotalCount(Criteria cri); 
 	
