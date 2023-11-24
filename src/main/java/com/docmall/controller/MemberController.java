@@ -112,6 +112,7 @@ public class MemberController {
 //				DB에서 가져온 암호화된 비밀번호 일치여부 검사 (matches가 해당 기능을 보유)
 			if (passwordEncoder.matches(dto.getMbsp_password(), db_vo.getMbsp_password())) {
 //					loginStatus이 값을 가지고 사용자의 로그인 상태 여부를 체크
+				db_vo.setMbsp_password(null);
 				session.setAttribute("loginStatus", db_vo);
 
 //					로그인 시간 업데이트

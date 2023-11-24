@@ -66,5 +66,12 @@
 			PRO_NUM	= #{pro_num}
 	</select>
 	
+	<delete id="delete" parameterType="Long">
+		DELETE 
+			REVIEW_TBL 
+		WHERE 
+			REW_NUM = #{rew_num}
+			
+	</delete>
 	
 </mapper>

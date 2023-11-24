@@ -30,6 +30,8 @@
       <th scope="col">리뷰내용</th>
       <th scope="col">평점</th>
       <th scope="col">날짜</th>
+      <th scope="col">작성자</th>
+      <th scope="col">비고</th>
     </tr>
   </thead>
   <tbody>
@@ -39,11 +41,12 @@
       <td>{{rew_content}}</td>
       <td>{{displayStar rew_score}}</td>
       <td>{{convertDate rew_regdate}}</td>
+      <td>{{mbsp_id}}</td>
+      <td>{{authControlView mbsp_id rew_num}}</td>
     </tr>
     {{/each}}
   </tbody>
 </table>
-
 </script>
 
 
@@ -150,12 +153,15 @@
         <div id="tabs-proreview">
           <p>상품후기 목록</p>
           <div class="row">
-            <div class="col-md-12" id="review_list">
-
+            <div class="col-md-12" id="review_list" >
+              
             </div>
           </div>
           <div class="row">
-            <div class="col-md-12 text-right">
+            <div class="col-md-8 text-center" id="review_paging">
+              
+            </div>
+            <div class="col-md-4 text-right">
               <button type="button" id="btn_review_write" class="btn btn-info">상품후기작성</button>
             </div>
           </div>
@@ -290,6 +296,9 @@
           // review_list
 
           printReviewList(data.list, $("#review_list"), $("#reviewTemplate"));
+          //review_paging 
+          printPaging(data.pageMaker, $("#review_paging"));
+
         });
       }
 
@@ -299,9 +308,37 @@
         let reviewHtml  = templateObj(reviewData);
 
         // 상품후기 목록 위치를 참조하여, 추가작업
-        $("#review_list").children().remove();
+        target.children().remove();
         target.append(reviewHtml);
       }
+       // 페이징 기능 작업함수
+       let printPaging = function (pageMaker, target) {
+        let pagingStr = '<nav id="navigation" aria-label="Page navigation example">';
+        pagingStr += '<ul class="pagination">';
+        
+        // 이전페이지 표시
+        if (pageMaker.prev) {
+          pagingStr += '<li class="page-item"><a class="page-link" href="'+ (pageMaker.startPage -1) +'">[prev]</a></li>';
+        }
+        // 페이지 번호 출력
+        for (let i = pageMaker.startPage; i <= pageMaker.endPage; i++) {
+          let className = pageMaker.cri.pageNum == i ? 'active' : '';
+          pagingStr += '<li  class="page-item '+ className +'"><a class="page-link" href="'+ i +'">'+ i +'</a></li>';
+        }
+
+        // 다음페이지 표시
+        if (pageMaker.next) {
+          pagingStr += '<li class="page-item"><a class="page-link" href="'+ (pageMaker.startPage +1) +'">[next]</a></li>';
+        }
+
+        pagingStr += '</ul>';
+        pagingStr += '</nav>';
+
+        target.children().remove();
+        target.append(pagingStr);
+      }
+        
+
 
       // 사용자 정의 Helper(핸들바의 함수정의)
       Handlebars.registerHelper("convertDate" , function(reviewtime){
@@ -338,11 +375,71 @@
         }
         return starStr;
       });
-      // 페이징 작업
+
+      // 상품후기 수정/삭제버튼
+
+        Handlebars.registerHelper("authControlView" , function(mbsp_id, rew_num){
+          let str = "";
+          let login_id = "${sessionScope.loginStatus.mbsp_id}";
+
+          // 로그인한 사용자와 상품후기 등록 사용자가 동일한지 여부를 체크
+          if(login_id == mbsp_id){
+            str += '<button type="button" name="btn_review_edit" class="btn btn-info" data-rew_num="' + rew_num + '">수정</button>';
+            str += '<button type="button" name="btn_review_del" class="btn btn-danger" data-rew_num="' + rew_num + '">삭제</button>';
+
+            // console.log(str);
+            // 출력내용이 태그일 때 사용
+            return new Handlebars.SafeString(str);
+            
+
+          }
+
+        
+      });
+
+      // 상품후기 삭제버튼
+      // "button[name='btn_review_del']"동적으로 생성되었기 때문에 직접 만들면 동작을 안함.
+      // 따라서 정적인 id를 직접 생성한 div태그에 넣어서 정적 - 동적 작용이 되도록했음.
+      $("div#review_list").on("click", "button[name='btn_review_del']", function () {
+          // console.log("상품후기 삭제");
+
+          if(!confirm("상품후기를 삭제하시겠습니까")) return;
+
+          let rew_num = $(this).data("rew_num");
+          $.ajax({
+            url: '/user/review/delete/' + rew_num,
+            headers: {
+              "Content-Type": "application/json", "X-HTTP-Method-Override": "DELETE"
+            },
+            type: 'delete',
+            dataType: 'text',
+            success: function (result) {
+              if (result == 'success') {
+                alert("상품평이 삭제됨");
+                url = "/user/review/list/" + ${ productVO.pro_num } + "/" + reviewPage;
+                // 상품평 목록 불러오는 작업.
+                getReviewInfo(url);
+              }
+            }
+
+          });
+        });
+
+        // 페이징 번호 클릭시 작동
+      $("div#review_paging").on("click", "nav#navigation ul a", function(e){
+        e.preventDefault();
+        console.log("페이지 번호");
+
+        reviewPage = $(this).attr("href"); // 상품후기에서 선택한 페이지 번호
+        
+        url = "/user/review/list/" + ${productVO.pro_num} + "/" + reviewPage;
+        
+        getReviewInfo(url); // 스프링에서 상품후기, 페이지번호 데이터 가져오는 함수
+      });
       
 
-      //상품후기저장
-      $("#btn_review_save").on("click", function() {
+       //상품후기저장
+       $("#btn_review_save").on("click", function() {
         //별평점 값
         let rew_score = 0;
         let rew_content = $("#rew_content").val();
@@ -364,6 +461,16 @@
           alert("상품평을 작성하세요");
           reutrn;
         }
+      
+
+
+     
+
+      
+
+     
+
+        
 
         // ajax를 사용하여 스프링으로 리뷰데이타 전송작업
         let review_data = {pro_num : $(this).data("pro_num"), rew_content : rew_content, rew_score : rew_score};
