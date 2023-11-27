@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.docmall.mapper.AdMemberMapper">
+	<select id="member_list" resultType="com.docmall.domain.MemberVO" parameterType="com.docmall.dto.Criteria">
+	 	<![CDATA[
+		select
+           MBSP_ID, 
+           MBSP_NAME, 
+           MBSP_EMAIL,
+           MBSP_LASTLOGIN, 
+           MBSP_DATESUB, 
+           MBSP_UPDATEDATE
+		from
+		(	
+		select /*+INDEX_DESC(MBSP_TBL PK_MBSP_ID) */
+		   rownum rn, 
+		   MBSP_ID, 
+           MBSP_NAME, 
+           MBSP_EMAIL, 
+           MBSP_ZIPCODE, 
+           MBSP_ADDR, 
+           MBSP_DEADDR, 
+           MBSP_POINT, 
+           MBSP_LASTLOGIN, 
+           MBSP_DATESUB, 
+           MBSP_UPDATEDATE
+		from 
+			MBSP_TBL
+        where
+        	
+			]]>
+			
+		<![CDATA[	
+			
+			rownum <= #{pageNum} * #{amount}
+		)
+			where rn > (#{pageNum} -1) * #{amount} 
+		]]>
+	 </select>
+	
+</mapper>

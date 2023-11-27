@@ -74,4 +74,13 @@
 			
 	</delete>
 	
+	<update id="review_modify" parameterType="com.docmall.domain.ReviewVO">
+		UPDATE 
+			REVIEW_TBL
+		SET
+			REW_CONTENT = #{rew_content}, REW_SCORE = #{rew_score}
+		WHERE
+			REW_NUM = #{rew_num}
+	</update>
+	
 </mapper>

@@ -15,4 +15,6 @@ public interface ReviewService {
 	
 	void delete(Long rew_num);
 	
+	void review_modify(ReviewVO vo);
+	
 }
