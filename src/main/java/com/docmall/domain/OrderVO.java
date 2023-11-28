@@ -1,5 +1,7 @@
 package com.docmall.domain;
 
+import java.util.Date;
+
 import lombok.Data;
 
 @Data
@@ -16,7 +18,7 @@ public class OrderVO {
 	private String 	ord_tel;
 	private int 	ord_price;
 	
-	private String 	ord_regdate; // sysdate
+	private Date 	ord_regdate; // sysdate
 	
 	
 	private String 	ord_status;

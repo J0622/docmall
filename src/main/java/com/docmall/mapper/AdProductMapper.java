@@ -13,9 +13,7 @@ public interface AdProductMapper {
 	void pro_insert(ProductVO vo);
 		
 	List<ProductVO>pro_list(Criteria cri);
-	
-	
-	
+
 	int getTotalCount(Criteria cri); 
 	
 //	파라미터가 2개 이상 사용되는 경우 @Param 어노테이션 사용
