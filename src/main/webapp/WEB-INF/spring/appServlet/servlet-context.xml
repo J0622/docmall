@@ -63,7 +63,7 @@
 	<!-- CKEditor에서 업로드 되는 폴더 경로 -->
 	<beans:bean id="uploadCKPath" class="java.lang.String">
 		<beans:constructor-arg
-			value="C:\\dev\\devTools\\upload\\ckeditor"></beans:constructor-arg>
+			value="C:\\dev\\devTools\\upload\\ckeditor\\"></beans:constructor-arg>
 	</beans:bean>
 
 	<context:component-scan
