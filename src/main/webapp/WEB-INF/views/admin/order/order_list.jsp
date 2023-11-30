@@ -127,6 +127,9 @@ desired effect
 									<input type="text" name="keyword" value="${pageMaker.cri.keyword}" />
 									<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}" />
 									<input type="hidden" name="amount" value="${pageMaker.cri.amount}" />
+                  날짜검색: <input type="date" name="start_date" value="${start_date}">
+                  ~
+                  <input type="date" name="end_date" value="${end_date}" >
 									<button type="submit" class="btn btn-primary">검색</button>
 							</form>
 						</div>
@@ -318,6 +321,10 @@ desired effect
         actionForm.attr("action", "/admin/order/order_list");
         actionForm.find("input[name='pageNum']").val($(this).attr("href"));
 
+        // 여기에 이 작업이 가능했던 근거는 @ModelAttribute를 사용했기 때문에
+      actionForm.append('<input type="date" name="start_date" value="${start_date}">');
+      actionForm.append('<input type="date" name="end_date" value="${end_date}">');
+
         actionForm.submit();
       });
 
@@ -359,7 +366,18 @@ desired effect
       let url = "/admin/order/order_detail_info2/" + ord_code;
       // getOrderDetailInfo(url, cur_tr);
 
-      $("#order_detail_content").load(url);
+      $.ajaxSetup({
+        'headers' :{
+          'AJAX' : 'true'
+        }
+      });
+
+      $("#order_detail_content").load(url, function(xhr, status, error){
+        if(status == "error"){
+          alert("로그아웃 되었습니다.");
+          location.href = "/admin/intro";
+        }
+      });
       // modal메소드는 부트스트랩 4.6에서 제공해주는 메소드이다.
       $("#order_detail_modal").modal('show');
     });

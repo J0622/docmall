@@ -117,7 +117,13 @@ public class MemberController {
 
 //					로그인 시간 업데이트
 				memberService.loginTimeUpdate(dto.getMbsp_id());
+				
+				if(session.getAttribute("targetUrl") != null) {
+					url = (String) session.getAttribute("targetUrl");
+				}else {
+				
 				url = "/";
+			}
 
 			} else {
 //					로그인 폼 주소로 이동

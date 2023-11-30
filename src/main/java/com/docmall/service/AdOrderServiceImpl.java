@@ -18,17 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class AdOrderServiceImpl implements AdOrderService {
 	private final AdOrderMapper adOrderMapper;
 
-	@Override
-	public List<OrderVO> order_list(Criteria cri) {
-		// TODO Auto-generated method stub
-		return adOrderMapper.order_list(cri);
-	}
-
-	@Override
-	public int getTotalCount(Criteria cri) {
-		// TODO Auto-generated method stub
-		return adOrderMapper.getTotalCount(cri);
-	}
+	
 
 	@Override
 	public List<OrderDetailInfoVO> orderDetailInfo1(Long ord_code) {
@@ -46,6 +36,18 @@ public class AdOrderServiceImpl implements AdOrderService {
 	public List<OrderDetailProductVO> orderDetailInfo2(Long ord_code) {
 		// TODO Auto-generated method stub
 		return adOrderMapper.orderDetailInfo2(ord_code);
+	}
+
+	@Override
+	public List<OrderVO> order_list(Criteria cri, String start_date, String end_date) {
+		// TODO Auto-generated method stub
+		return adOrderMapper.order_list(cri, start_date, end_date);
+	}
+
+	@Override
+	public int getTotalCount(Criteria cri, String start_date, String end_date) {
+		// TODO Auto-generated method stub
+		return adOrderMapper.getTotalCount(cri, start_date, end_date);
 	}
 	
 }

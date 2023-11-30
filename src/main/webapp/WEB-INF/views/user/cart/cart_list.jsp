@@ -123,6 +123,9 @@
 					type: 'post',
 					data: { cart_code: cart_code, cart_amount: cart_amount },
 					dataType: 'text',
+					beforeSend : function(xhr){
+						xhr.setRequestHeader("AJAX", "true");
+					},
 					success: function (result) {
 						if (result == 'success') {
 
@@ -137,6 +140,11 @@
 							fn_cart_sum_price();
 							
 						}
+					},
+					error : function(xhr, status, error){
+						alert(status);
+						alert("로그인 페이지로 이동합니다.");
+						location.href = "/member/login";
 					}
 
 				});
