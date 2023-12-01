@@ -112,6 +112,7 @@
 	<%@include file="/WEB-INF/views/comm/plugin.jsp"%>
 	
 	<!-- 카테고리 메뉴 작업 소스 -->
+	<!-- 원활한 js경로 사용을 위해서 servlet-context.xml에서 리소스 작업을 진행했음 -->
 	<script src="/js/category_menu.js"></script>
 </body>
 </html>

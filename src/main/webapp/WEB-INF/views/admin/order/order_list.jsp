@@ -411,7 +411,7 @@ desired effect
       actionForm.append("<input type='hidden' name='ord_code' value='" + ord_code + "' />");
       actionForm.append("<input type='hidden' name='pro_num' value='" + pro_num + "' />");
 
-      actionForm.attr("action","/admin/order/order_product_delete");
+      actionForm.attr("act1ion","/admin/order/order_product_delete");
       actionForm.submit();
 
     });

@@ -122,13 +122,13 @@ desired effect
 						<div class="row">
 							<div class="col-md-4">
 								<button type="button" class="btn btn-primary" id="btn_check_modify1" role="button">체크상품수정1</button>	
-                <button type="button" class="btn btn-primary" id="btn_check_modify2" role="button">체크상품수정2</button>	
+                				<button type="button" class="btn btn-primary" id="btn_check_modify2" role="button">체크상품수정2</button>	
 							<!--1)페이지번호 클릭할 때 사용  [이전]  1	2	3	4	5 [다음]  -->
 							<!--2)목록에서 상품이미지 또는 상품명 클릭할 때 사용   -->
 							  <form id="actionForm" action="" method="get">
 								<input type="hidden" name="pageNum" id="pageNum" value="${pageMaker.cri.pageNum}" />
 								<input type="hidden" name="amount"  id="amount" value="${pageMaker.cri.amount}" />
-								<input type="hidden" name="type" id="type" value="${pageMaker.cri.type}" />
+								<input type="hidden" name="type" 	id="type" value="${pageMaker.cri.type}" />
 								<input type="hidden" name="keyword" id="keyword" value="${pageMaker.cri.keyword}" />
 								
 							  </form>
@@ -147,14 +147,14 @@ desired effect
 									<!-- [이전] 11	12	13	14	15 16	17	18	19	20   -->
 									<c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="num">
 										<li class='page-item ${pageMaker.cri.pageNum ==  num ? "active":"" }'aria-current="page">
-											<a class="page-link movepage" href="${num }" data-page="${num }">${num }</a>
+											<a class="page-link movepage" href="${num }">${num }</a>
 										</li>
 									</c:forEach>
 									
 									<!--  다음 표시여부 -->
 									<c:if test="${pageMaker.next }">
 										<li class="page-item">
-										<a href="${pageMaker.endPage + 1 }" class="page-link movepage" href="#">Next</a>
+										<a href="${pageMaker.endPage + 1 }" class="page-link movepage">Next</a>
 										</li>
 									</c:if>
 									
@@ -273,6 +273,19 @@ desired effect
 
        actionForm.submit();
     });
+
+	// 상품이미지 또는 상품명을 클릭시 
+	$("a.move").on("click", function(e){
+	e.preventDefault();
+
+    let pro_num = $(this).parent().parent().find("input[name='check']").val();
+	actionForm.find("input[name='pro_num']").remove();
+	actionForm.append('<input type="hidden" name="pro_num" id="pro_num" value="' + pro_num + '" />');
+    actionForm.attr("action", "/admin/product/pro_get");
+    actionForm.submit();
+
+		});	
+    
     
     // 목록에서 제목행 체크박스 선택
     let isCheck = true;

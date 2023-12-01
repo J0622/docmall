@@ -7,6 +7,9 @@ package com.docmall.domain;
 
 public class CategoryVO {
 	 
+//	테이블의 컬럼명과 필드명을 동일하게 함.
+//	만약 컬럼명과 필드명을 다르게 사용할 경우 컬럼명에 별칭을 주거나 Mybatis resultMap 사용으로 데체.
+//	resultMap은 이외에도 여러기능이 있으나 시간이 없어서 설명불가능(찾아보는게 좋을수도?)
 	private Integer cg_code; // 모든 카테고리 코드
 	private Integer cg_parent_code; // 1차 카테고리 코드
 	private String  cg_name;

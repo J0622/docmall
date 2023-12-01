@@ -6,6 +6,8 @@
 	<groupId>com.docmall</groupId>
 	<artifactId>controller</artifactId>
 	<name>docmall</name>
+	<!-- 배포파일이 War로 만들어지게 되면 톰캣서버가 내장으로 구축되어있어야 함. -->
+	<!-- 스프링 MVC는 JAR로 배포가 불가능함. -->
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>

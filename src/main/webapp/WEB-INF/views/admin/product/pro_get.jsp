@@ -66,7 +66,7 @@ desired effect
     		<div class="col-md-12">
     			<div class="box box-primary">
 					<div class="box-header with-border">
-						<h3 class="box-title mt-5">Product Edit</h3>
+						<h3 class="box-title mt-5">Product View</h3>
 						<form id="actionForm" action="" method="get">
 							<input type="hidden" name="pageNum" id="pageNum" value="${cri.pageNum}" />
 							<input type="hidden" name="amount"  id="amount" value="${cri.amount}" />
@@ -104,9 +104,9 @@ desired effect
 						  <label for="title" class="col-sm-2 col-form-label">상품명</label>
 			              <div class="col-sm-4">
 			              <input type="hidden" name="pageNum" id="pageNum" value="${cri.pageNum}" />
-		                      <input type="hidden" name="amount"  id="amount" value="${cri.amount}" />
-		                      <input type="hidden" name="type" id="type" value="${cri.type}" />
-		                      <input type="hidden" name="keyword" id="keyword" value="${cri.keyword}" />
+                      <input type="hidden" name="amount"  id="amount" value="${cri.amount}" />
+                      <input type="hidden" name="type" id="type" value="${cri.type}" />
+                      <input type="hidden" name="keyword" id="keyword" value="${cri.keyword}" />
 			              	<input type="hidden" name="pro_num" value="${productVO.pro_num }">
 			                <input type="text" class="form-control" name="pro_name" id="pro_name" value="${productVO.pro_name }">
 			              </div>

@@ -29,7 +29,7 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
 			} else {
 				getTargetUrl(request);
 
-				response.sendRedirect("/admin/admin_menu");
+				response.sendRedirect("/admin/intro");
 			}
 
 		} else {

@@ -18,8 +18,8 @@
 		<!-- 데이터베이스 연결 정보 및 관련 설정 작업 -->
 	<!-- HikariCP 라이브러리를 이용한 연결정보 설정 -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+	<!--  여기 주석의 두 줄은 서버 배포용임.  -->
 	<!--	
-		 여기 주석의 두 줄은 서버 배포용임. 
 		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
 		<property name="jdbcUrl"value="jdbc:oracle:thin:@localhost:1521:xe" /> 
 	-->

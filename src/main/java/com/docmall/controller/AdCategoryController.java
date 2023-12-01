@@ -37,6 +37,7 @@ public class AdCategoryController {
 		
 		ResponseEntity<List<CategoryVO>> entity = null;
 		
+//		여기서 adCategoryService.getSecondCategoryList(cg_parent_code) 사용했기 때문에 바깥에 또 작업하면 안됨.
 		entity = new ResponseEntity<List<CategoryVO>>(adCategoryService.getSecondCategoryList(cg_parent_code), HttpStatus.OK);
 //		list객체 -> JSON 으로 변환하는 라이브러리(jackson-databind 라이브러리 : pom.xml참고)
 		

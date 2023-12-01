@@ -30,9 +30,12 @@
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->
+	<!-- jsp 경로를 아래와 같이 지정했기 때문에  views폴더를 만들어서 파일을 넣었던것임 -->
+	<!-- 기업에서 커스터 마이징했다면 맞춰서 작업해주어야 함. -->
 	<beans:bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<!-- 컨트롤ㄹ러의 메소드에서 리턴해주는 폴더명을 포함한 jsp 파일을 참조 -->
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 

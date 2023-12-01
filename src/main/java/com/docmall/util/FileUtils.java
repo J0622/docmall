@@ -29,6 +29,7 @@ public class FileUtils {
 //		File.separator: 각 OS별로 경로 구분자를 반환해주는 기능
 //		유닉스,맥,리눅스: "/"
 //		윈도우 : "\" , "/"
+//		File.separator 애가 운영체제에 따라서 슬래시,역슬래시를 맞춰서 해주기 때문에 써야됨.
 		return str.replace("-", File.separator);
 
 	}
@@ -44,10 +45,12 @@ public class FileUtils {
 		File file = new File(uploadFolder, dateFolder); // C:/dev/devTools/upload "2023/11/02"
 
 //		C:/dev/devTools/upload  "2023/11/02" 해당 폴더경로가 없으면 폴더명 생성
+//		file.mkdir();은 이제 사용하지 않음 file.mkdirs(); s붙이는거 잊지 않도록
 		if (file.exists() == false) {
 			file.mkdirs();
 		}
 
+//		클라이언트에서 전송한 원본 파일명 
 		String clientFileName = uploadFile.getOriginalFilename();
 
 //		파일명을 중복되지 않게 하기위해서 고유한 이름에 사용하는 UUID기능 사용
@@ -144,6 +147,8 @@ public class FileUtils {
 //			예> 윈도우즈:/ 리눅스:\
 //		1) 원본이미지 삭제
 		new File((uploadPath + folderName + "\\" + fileName).replace('\\', File.separatorChar)).delete();
+		//2)썸네일이미지 삭제
+		new File((uploadPath + folderName + "\\" +  "s_" + fileName).replace('\\', File.separatorChar)).delete();
 
 	}
 
